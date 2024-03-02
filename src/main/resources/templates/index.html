@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonez</title>
+	<link rel="icon" href="/wonez.ico" type="image/x-icon">
+
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+		.wonez-title img {
+			width: 16%;
+            display: block;
+            margin: 0 auto;  /* Centrar la imagen */
+        }
+
+        .welcome-message {
+            font-size: 1.2em;
+            margin-bottom: 20px;
+        }
+
+        .article-list {
+            margin-top: 20px;
+            border-bottom: 1px solid #ccc;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+        }
+
+        .article-image-container {
+            position: relative;
+            max-width: 100%;
+        }
+
+        .article-image {
+            width: 50%; /* Ajusta el ancho según tus preferencias */
+            height: auto;
+        }
+
+        .article-category {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #007BFF;
+            color: #fff;
+            padding: 5px;
+            border-radius: 5px;
+        }
+
+        .article-content {
+            margin-top: 10px;
+        }
+
+        .article-title {
+            margin-bottom: 5px;
+            color: #333;
+        }
+
+        .new-article-link {
+            display: block;
+            margin-top: 20px;
+            text-decoration: none;
+            color: #007BFF;
+        }
+    </style>
+</head>
+<body>
+    {{#welcome}}
+        <div class="welcome-message">
+            <h1>Bienvenido por primera vez a Wonez!</h1>
+        </div>
+    {{/welcome}}
+
+    <div class="wonez-title">
+        <img src="/wonez-title-image.png" alt="Wonez - Noticias Deportivas">
+    </div>
+    
+    {{#articles}}
+        <div class="article-list">
+            <div class="article-image-container">
+                <img class="article-image" src="/article/{{id}}/image" alt="{{title}}">
+                <div class="article-category">{{category}}</div>
+            </div>
+            <div class="article-content">
+                <a href="article/{{id}}">
+                    <h2 class="article-title">{{title}}</h2>
+                    <p>{{author}}</p>
+                </a>
+            </div>
+        </div>
+    {{/articles}}
+    
+    {{^articles}}
+        <p>No hay artículos aún</p>
+    {{/articles}}
+
+    <a class="new-article-link" href="article/new">Nuevo artículo</a>
+</body>
+</html>

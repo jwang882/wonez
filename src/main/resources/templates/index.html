@@ -28,26 +28,25 @@
         }
 
         .article-list {
-            margin-top: 20px;
-            border-bottom: 1px solid #ccc;
-            padding-bottom: 10px;
-            margin-bottom: 10px;
+            text-align: center;
         }
 
         .article-image-container {
+            display: inline-block;
+            margin: 0 10px 10px; /* Agrega un margen y espacio abajo entre las noticias si lo deseas */
             position: relative;
-            max-width: 100%;
         }
 
         .article-image {
-            width: 50%; /* Ajusta el ancho según tus preferencias */
+            width: 30%; /* Ajusta el porcentaje según tus preferencias */
             height: auto;
         }
 
         .article-category {
             position: absolute;
-            top: 10px;
-            left: 10px;
+            margin: 7px 480px 10px;
+            top: 0;
+            left: 0;
             background-color: #007BFF;
             color: #fff;
             padding: 5px;
@@ -59,8 +58,13 @@
         }
 
         .article-title {
-            margin-bottom: 5px;
+            font-size: 1.5em; /* Ajusta el tamaño según tus preferencias */
+            margin-bottom: 3px;
             color: #333;
+        }
+
+        .article-content p {
+            font-size: 1em; /* Ajusta el tamaño según tus preferencias */
         }
 
         .new-article-link {
@@ -85,8 +89,8 @@
     {{#articles}}
         <div class="article-list">
             <div class="article-image-container">
-                <img class="article-image" src="/article/{{id}}/image" alt="{{title}}">
                 <div class="article-category">{{category}}</div>
+                <img class="article-image" src="/article/{{id}}/image" alt="{{title}}">
             </div>
             <div class="article-content">
                 <a href="article/{{id}}">

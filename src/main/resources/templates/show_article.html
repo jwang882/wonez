@@ -1,18 +1,174 @@
-<html>
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonez</title>
+    <link rel="icon" href="/wonez.ico" type="image/x-icon">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f8f8;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-article {
+            border-radius: 5px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background-color: #fff;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-article .category {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .news-article .article-image {
+            width: 100%;
+            max-width: 600px;
+            height: auto;
+            border-radius: 5px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .news-article h1 {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .news-article h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .news-article p {
+            font-size: 1rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+        }
+
+        .news-article .author {
+            font-size: 1rem;
+            margin-top: 1rem;
+            padding: 5px 10px;
+            background-color: #f4f4f4;
+            border-radius: 5px;
+        }
+
+        .review-box {
+            border: 3px solid #007BFF;
+            border-radius: 5px;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .review-box h2 {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .review-box label {
+            display: block;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 0.5rem;
+        }
+
+        .review-box input[type="text"],
+        .review-box input[type="number"] {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        .review-box textarea {
+            width: 100%;
+            padding: 0.5rem;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            margin-bottom: 1rem;
+            box-sizing: border-box;
+        }
+
+        .review-box button {
+            width: 100%;
+            padding: 0.5rem;
+            background-color: #007BFF;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .review-box button:hover {
+            background-color: #0056b3;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 2rem;
+            text-decoration: none;
+            color: #007BFF;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
 <body>
-	<p>CATEGORÍA: {{article.category}}</p>
-	<p>USUARIO: {{article.user}}</p>
-	<p>TÍTULO: {{article.title}}</p>
-	<p>SUBTÍTULO: {{article.subtitle}}</p>
-	<p>AUTOR: {{article.author}}</p>
-	<p>TEXTO: {{article.text}}</p>
-	
-	<img src="/article/{{article.id}}/image"></img>
-	
-	<a href="/article/{{article.id}}/delete">ELIMINAR ARTÍCULO</a>
-	
-	<br>
-	
-	<a href="/">INICIO</a>
+
+    <div class="container">
+        <div class="news-article">
+            <div class="category">{{article.category}}</div>
+            <img class="article-image" src="/article/{{article.id}}/image" alt="Article Image">
+            <h1>{{article.title}}</h1>
+            <h2>{{article.subtitle}}</h2>
+            <p>{{article.text}}</p>
+            <div class="author">Autor: {{article.author}}</div>
+            <div class="review-box">
+                <h2>Añadir una opinión</h2>
+                <form>
+                    <label for="username">Usuario</label>
+                    <input type="text" id="username" name="username" value="Wonez" readonly>
+
+                    <label for="score">Puntuación</label>
+                    <input type="number" id="score" name="score" min="0" max="10">
+
+                    <label for="review">Opinión</label>
+                    <textarea id="review" name="review"></textarea>
+
+                    <button type="submit">Añadir Reseña</button>
+                </form>
+            </div>
+        </div>
+        <a class="back-link" href="/">Volver al Inicio</a>
+    </div>
+
 </body>
+
 </html>

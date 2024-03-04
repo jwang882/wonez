@@ -11,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -65,6 +66,33 @@ public class ArticleController {
 
 		return "saved_article";
 	}
+
+	@GetMapping("/article/{id}/edit")
+    public String editArticleForm(Model model, @PathVariable long id) {
+        Article article = articleService.findById(id);
+        model.addAttribute("article", article);
+        return "edit_article";
+    }
+
+	@PostMapping("/article/{id}/edit")
+    public String editArticle(Model model, @PathVariable long id, @ModelAttribute Article updatedArticle) {
+        Article existingArticle = articleService.findById(id);
+
+        // Update the existing article with the new values
+        existingArticle.setCategory(updatedArticle.getCategory());
+        existingArticle.setUser(updatedArticle.getUser());
+        existingArticle.setTitle(updatedArticle.getTitle());
+        existingArticle.setSubtitle(updatedArticle.getSubtitle());
+        existingArticle.setAuthor(updatedArticle.getAuthor());
+        existingArticle.setText(updatedArticle.getText());
+
+        articleService.update(existingArticle);
+
+        model.addAttribute("article", existingArticle);
+
+        return "show_article";
+    }
+
 
 	@GetMapping("/article/{id}")
 	public String showArticle(Model model, @PathVariable long id) {

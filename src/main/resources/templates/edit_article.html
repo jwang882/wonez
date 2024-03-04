@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="es" charset="UTF-8">
+
+<head>
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonez</title>
+    <link rel="icon" href="/wonez.ico" type="image/x-icon">
+</head>
+
+<body>
+
+    <h2>Edit Article</h2>
+
+    <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data">
+        <p>CATEGORÍA:</p>
+        <input type="text" name="category" value="{{article.category}}" required>
+
+        <p>USUARIO:</p>
+        <input type="text" name="user" value="Wonez" readonly>
+
+        <p>TÍTULO:</p>
+        <input type="text" name="title" value="{{article.title}}" required>
+
+        <p>SUBTÍTULO:</p>
+        <input type="text" name="subtitle" value="{{article.subtitle}}" required>
+
+        <p>AUTOR:</p>
+        <input type="text" name="author" value="{{article.author}}" required>
+
+        <p>TEXTO:</p>
+        <textarea name="text" rows="5" cols="40" required>{{article.text}}</textarea>
+
+        <p>IMAGEN:</p>
+        <input type="file" name="newImage" accept=".jpg, .jpeg">
+
+
+        <input type='submit' value='Save'/>
+    </form>
+
+</body>
+
+</html>

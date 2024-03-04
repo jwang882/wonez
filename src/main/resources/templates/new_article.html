@@ -1,15 +1,16 @@
 <html>
 <head>
-	<meta charset="UTF-8"/>
-	<title>Wonez</title>
-	<link rel="icon" href="/wonez.ico" type="image/x-icon">
+	<meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wonez</title>
+    <link rel="icon" href="/wonez.ico" type="image/x-icon">
 </head>
 <body>
 	<form action="/article/new" method="post" enctype="multipart/form-data">
 		<p>CATEGORÍA: </p>
-		<input type='text' name='category' value='{{#category}}{{.}}{{/category}}'/>
+		<input type='text' name='category'/>
 		<p>USUARIO: </p>
-		<input type='text' name='user' value='{{#user}}{{.}}{{/user}}'/>
+		<input type='text' name='user' value="Wonez" readonly/>
 		<p>TÍTULO:</p>
 		<input type='text' name='title'/>
 		<p>SUBTÍTULO:</p>

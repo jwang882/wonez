@@ -56,5 +56,4 @@ public class ImageService {
 		
 		Files.deleteIfExists(imageFile);				
 	}
-
 }

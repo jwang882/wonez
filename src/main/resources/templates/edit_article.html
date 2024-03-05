@@ -8,9 +8,38 @@
     <link rel="icon" href="/wonez.ico" type="image/x-icon">
 </head>
 
+<style>
+
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+    }
+	
+    body {
+        font-family: 'Verdana', Times, serif;
+        align-items: center;
+        justify-content: center;
+        background-color: #f0f0f0;
+        height: 100vh;
+        margin: 0 auto;
+    }
+
+
+    form {
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 100px;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(102, 100, 100, 0.1);
+    }
+
+</style>
+
 <body>
 
-    <h2>Edit Article</h2>
+    <h2>Editar Artículo</h2>
 
     <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
         <p>CATEGORÍA:</p>

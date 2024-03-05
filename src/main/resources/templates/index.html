@@ -7,24 +7,31 @@
 	<link rel="icon" href="/wonez.ico" type="image/x-icon">
 
     <style>
-        body {
-            font-family: 'Arial', sans-serif;
+        body{
+            font-family:"Arial", sand-serif;
             margin: 20px;
+            text-decoration: none;
         }
 
-        h1 {
+        h1{
             color: #333;
         }
 
-		.wonez-title img {
-			width: 16%;
-            display: block;
-            margin: 0 auto;  /* Centrar la imagen */
+        .wonez-title img {
+            width: 150vw; /* ancho al 80% del ancho de la ventana de cualquier navegador */
+            max-width: 300px; /*el ancho maximo de 300 px */
+            display: block; /* imagen como bloque */
+            margin: 0 auto; /* centra la imagen */
         }
 
-        .welcome-message {
-            font-size: 1.2em;
+        .wonez-title:hover {
+            transform: scale(1.05);
+        }
+
+        .welcome-message h1 {
+            font-size: 1.2em; /* aumenta el tamaño de la fuente del mensaje */
             margin-bottom: 20px;
+            text-align: center;
         }
 
         .article-list {
@@ -32,22 +39,22 @@
         }
 
         .article-image-container {
-            display: inline-block;
-            margin: 0 10px 10px; /* Agrega un margen y espacio abajo entre las noticias si lo deseas */
-            position: relative;
+            display: inline-block; /* en linea con otros elementos */
+            margin: 0 10px 10px; /* márgenes alrededor de la imagen */
+            position: relative; 
         }
 
         .article-image {
-            width: 30%; /* Ajusta el porcentaje según tus preferencias */
-            height: auto;
+            width: 90vw; /* 90% del sncho de la ventada del navegador */
+            max-width: 800px; /* máximo ancho de 300 píxeles */
+            height: auto; 
         }
 
         .article-category {
             position: absolute;
-            margin: 7px 480px 10px;
-            top: 0;
-            left: 0;
-            background-color: #007BFF;
+            margin: 7px;
+            top: 0; left: 0; /* Ubica la etiqueta de categoría en la esquina superior izquierda */
+            background-color:  #007BFF;
             color: #fff;
             padding: 5px;
             border-radius: 5px;
@@ -58,33 +65,52 @@
         }
 
         .article-title {
-            font-size: 1.5em; /* Ajusta el tamaño según tus preferencias */
+            font-size: 1.5em;
             margin-bottom: 3px;
             color: #333;
+            text-decoration: none;
         }
 
-        .article-content p {
-            font-size: 1em; /* Ajusta el tamaño según tus preferencias */
+        .article-content p{
+            font-size: 1em;
+            text-decoration: none;
         }
 
         .new-article-link {
             display: block;
-            margin-top: 20px;
-            text-decoration: none;
-            color: #007BFF;
+            margin: 20px auto; /* Margen superior e inferior de 20px y centrado horizontal */
+            padding: 10px; /* Aumenta el espacio interno para que el botón sea más grande */
+            color: #007BFF; /* Color del texto */
+                text-align: center; /* Centra el texto */
+            text-decoration: none; /* Quita la subrayado del enlace */
+            border: 2px solid #007BFF; /* Borde sólido de 2px */
+            border-radius: 5px; /* Bordes redondeados */
+            cursor: pointer; /* Cambia el cursor al pasar sobre el botón */
         }
+
+        .new-article-link:hover {
+            background-color: #007BFF; /* Cambia el color de fondo cuando se pasa el ratón */
+            color: #fff; /* Cambia el color del texto cuando se pasa el ratón */
+        }
+
+
+        .article-image:hover {
+            transform: scale(1.06);
+        }
+
+
     </style>
 </head>
 <body>
-    {{#welcome}}
-        <div class="welcome-message">
-            <h1>Bienvenido por primera vez a Wonez!</h1>
-        </div>
-    {{/welcome}}
-
     <div class="wonez-title">
         <img src="/wonez-title-image.png" alt="Wonez - Noticias Deportivas">
     </div>
+
+    {{#welcome}}
+    <div class="welcome-message">
+        <h1>¡Bienvenido por primera vez a Wonez!</h1>
+    </div>
+    {{/welcome}}
     
     {{#articles}}
         <div class="article-list">

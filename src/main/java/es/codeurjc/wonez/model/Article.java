@@ -2,7 +2,7 @@ package es.codeurjc.wonez.model;
 
 public class Article {
 
-	private Long id;
+	private Long id=null;
 	private String category;
 	private String user;
 	private String title;
@@ -80,6 +80,8 @@ public class Article {
 		this.text = text;
 	}
 	
+	
+
 	@Override
 	public String toString() {
 		return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="

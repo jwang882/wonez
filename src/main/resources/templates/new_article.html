@@ -4,9 +4,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wonez</title>
     <link rel="icon" href="/wonez.ico" type="image/x-icon">
+
+	<style>
+	
+		body {
+			font-family: 'Verdana', Times, serif;
+			align-items: center;
+			justify-content: center;
+			background-color: #f0f0f0;
+			height: 100vh;
+			margin: 0 auto;
+		}
+
+
+		form {
+			max-width: 500px;
+			margin: 0 auto;
+			margin-top: 200px;
+			background-color: #f9f9f9;
+			padding: 10px;
+			border-radius: 10px;
+			box-shadow: 0 0 10px rgba(102, 100, 100, 0.1);
+		}
+
+	</style>
 </head>
 <body>
-	<form action="/article/new" method="post" enctype="multipart/form-data">
+	<form action="/article/new" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
 		<p>CATEGORÍA: </p>
 		<input type='text' name='category'/>
 		<p>USUARIO: </p>

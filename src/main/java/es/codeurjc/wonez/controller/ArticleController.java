@@ -19,6 +19,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.wonez.service.ImageService;
 import es.codeurjc.wonez.service.ArticleService;
 import es.codeurjc.wonez.service.UserSession;
+import es.codeurjc.wonez.model.Comment;
 
 
 @Controller
@@ -119,4 +120,31 @@ public class ArticleController {
 
 		return "deleted_article";
 	}
+
+	@PostMapping("/article/{id}/add-comment")
+	public String addComment(Model model, @PathVariable long id, @ModelAttribute Comment newComment) {
+		Article article = articleService.findById(id);
+
+		// Añade el nuevo comentario al artículo
+		article.addComment(newComment);
+		articleService.update(article);
+
+		model.addAttribute("article", article);
+
+		return "redirect:/article/" + id;
+	}
+
+	@GetMapping("/article/{articleId}/delete-comment/{commentId}")
+	public String deleteComment(Model model, @PathVariable long articleId, @PathVariable long commentId) {
+		Article article = articleService.findById(articleId);
+
+		// Elimina el comentario por su ID
+		article.deleteCommentById(commentId);
+		articleService.update(article);
+
+		// Redirige a la URL que muestra el artículo específico
+		return "redirect:/article/" + articleId;
+	}
+
+
 }

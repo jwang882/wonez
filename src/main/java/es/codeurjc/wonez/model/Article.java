@@ -92,6 +92,11 @@ public class Article {
         this.comments.add(comment);
     }
 
+    // Añade este método para eliminar un comentario por su ID
+    public void deleteCommentById(Long commentId) {
+        comments.removeIf(comment -> comment.getId().equals(commentId));
+    }
+
     @Override
     public String toString() {
         return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="

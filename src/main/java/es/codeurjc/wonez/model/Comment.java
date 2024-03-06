@@ -2,7 +2,7 @@ package es.codeurjc.wonez.model;
 
 public class Comment {
 
-    private Long id;
+    private Long id=null;
     private String user;
     private String text;
     private int score;

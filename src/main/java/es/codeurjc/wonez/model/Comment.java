@@ -10,9 +10,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String user, String text) {
+    public Comment(String user, String text, int score) {
         this.user = user;
         this.text = text;
+        this.score = score;
     }
 
     public Long getId() {
@@ -49,6 +50,8 @@ public class Comment {
 
     @Override
     public String toString() {
-        return "Comment [id=" + id + ", user=" + user + ", text=" + text + "]";
+        return "Comment [id=" + id + ", user=" + user + ", text=" + text + ", score=" + score + "]";
     }
+
+    
 }

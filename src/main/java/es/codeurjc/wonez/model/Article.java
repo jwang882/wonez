@@ -1,6 +1,7 @@
 package es.codeurjc.wonez.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Article {
@@ -13,6 +14,7 @@ public class Article {
     private String author;
     private String text;
     private List<Comment> comments;
+    private static long commentIdCounter = 0;
 
     public Article() {
         this.comments = new ArrayList<>();
@@ -89,12 +91,23 @@ public class Article {
     }
 
     public void addComment(Comment comment) {
+        comment.setId(generateCommentId());
         this.comments.add(comment);
     }
 
-    // Añade este método para eliminar un comentario por su ID
     public void deleteCommentById(Long commentId) {
-        comments.removeIf(comment -> comment.getId().equals(commentId));
+        Iterator<Comment> iterator = comments.iterator();
+        while (iterator.hasNext()) {
+            Comment comment = iterator.next();
+            if (comment.getId().equals(commentId)) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    private synchronized static long generateCommentId() {
+        return commentIdCounter++;
     }
 
     @Override

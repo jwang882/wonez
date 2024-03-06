@@ -195,23 +195,21 @@
 
             <div class="comments-section">
                 <h2>Comentarios</h2>
-                
+
                 {{#article.comments}}
-                    <div class="comment">
-                        <p class="comment-user">Usuario: {{user}}</p>
-                        <p class="comment-score">Puntuación: {{score}}</p>
-                        <p class="comment-text">{{text}}</p>
-                        <form action="/article/{{article.id}}/delete-comment/{{id}}" method="post">
-                            <button type="submit" onclick="return confirm('¿Estás seguro de eliminar este comentario?')">Eliminar comentario</button>
-                        </form>
-                    </div>
+                <div class="comment">
+                    <p class="comment-user">Usuario: {{user}}</p>
+                    <p class="comment-score">Puntuación: {{score}}</p>
+                    <p class="comment-text">{{text}}</p>
+                    <a href="/article/{{article.id}}/delete-comment/{{id}}" class="delete-comment-link">Eliminar comentario</a>
+                </div>
                 {{/article.comments}}
             </div>
 
             <!-- Formulario para agregar comentario -->
             <div class="review-box">
                 <h2>Añadir una opinión</h2>
-                <form action="/article/{{article.id}}/add-comment" method="post">
+                <form action="/article/{{article.id}}/add-comment" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
                     <label for="username">Usuario</label>
                     <input type="text" id="username" name="user" value="Wonez" readonly>
 

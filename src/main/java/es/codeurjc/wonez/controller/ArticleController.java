@@ -97,13 +97,12 @@ public class ArticleController {
 
 	@GetMapping("/article/{id}")
 	public String showArticle(Model model, @PathVariable long id) {
-
 		Article article = articleService.findById(id);
-
 		model.addAttribute("article", article);
-
+		model.addAttribute("comments", article.getComments()); // Asegúrate de añadir los comentarios al modelo
 		return "show_article";
 	}
+
 	
 	@GetMapping("/article/{id}/image")	
 	public ResponseEntity<Object> downloadImage(@PathVariable int id) throws MalformedURLException {
@@ -135,16 +134,10 @@ public class ArticleController {
 	}
 
 	@GetMapping("/article/{articleId}/delete-comment/{commentId}")
-	public String deleteComment(Model model, @PathVariable long articleId, @PathVariable long commentId) {
+	public String deleteComment(Model model, @PathVariable long articleId, @PathVariable long commentId) throws IOException {
 		Article article = articleService.findById(articleId);
-
-		// Elimina el comentario por su ID
 		article.deleteCommentById(commentId);
 		articleService.update(article);
-
-		// Redirige a la URL que muestra el artículo específico
 		return "redirect:/article/" + articleId;
 	}
-
-
 }

@@ -29,11 +29,8 @@ public class ArticleService {
 	}
 
 	public void save(Article articles) {
-
 		long id = nextId.getAndIncrement();
-
 		articles.setId(id);
-
 		this.articles.put(id, articles);
 	}
 
@@ -47,6 +44,4 @@ public class ArticleService {
 			articles.put(id, updatedArticle);
 		}
 	}
-	
-
 }

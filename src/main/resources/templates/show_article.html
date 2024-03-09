@@ -6,9 +6,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wonez</title>
     <link rel="icon" href="/wonez.ico" type="image/x-icon">
+
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: "Arial, sans-serif";
             line-height: 1.6;
             margin: 0;
             padding: 0;
@@ -75,6 +76,31 @@
             border-radius: 5px;
         }
 
+        .comments-section {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f8f8;
+            border-radius: 5px;
+        }
+
+        .comments-section h2 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .comment {
+            margin-bottom: 10px;
+        }
+
+        .comment-user {
+            color: #0077f6;
+        }
+
+        .comment-text {
+            color: #333;
+        }
+
         .review-box {
             border: 3px solid #007BFF;
             border-radius: 5px;
@@ -130,6 +156,22 @@
             background-color: #0056b3;
         }
 
+        .edit-link {
+            display: block;
+            margin-top: 2rem;
+            text-decoration: none;
+            color: #000000;
+            font-weight: bold;
+        }
+
+        .delete-link {
+            display: block;
+            margin-top: 2rem;
+            text-decoration: none;
+            color: #ff0000;
+            font-weight: bold;
+        }
+
         .back-link {
             display: block;
             margin-top: 2rem;
@@ -150,23 +192,39 @@
             <h2>{{article.subtitle}}</h2>
             <p>{{article.text}}</p>
             <div class="author">Autor: {{article.author}}</div>
+
+            <div class="comments-section">
+                <h2>Comentarios</h2>
+
+                {{#article.comments}}
+                <div class="comment">
+                    <p class="comment-user">Usuario: {{user}}</p>
+                    <p class="comment-score">Puntuación: {{score}}</p>
+                    <p class="comment-text">{{text}}</p>
+                    <a href="/article/{{article.id}}/delete-comment/{{id}}" class="delete-comment-link">Eliminar comentario</a>
+                </div>
+                {{/article.comments}}
+            </div>
+
+            <!-- Formulario para agregar comentario -->
             <div class="review-box">
                 <h2>Añadir una opinión</h2>
-                <form>
+                <form action="/article/{{article.id}}/add-comment" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
                     <label for="username">Usuario</label>
-                    <input type="text" id="username" name="username" value="Wonez" readonly>
+                    <input type="text" id="username" name="user" value="Wonez" readonly>
 
                     <label for="score">Puntuación</label>
                     <input type="number" id="score" name="score" min="0" max="10">
 
                     <label for="review">Opinión</label>
-                    <textarea id="review" name="review"></textarea>
+                    <textarea id="review" name="text"></textarea>
 
                     <button type="submit">Añadir Reseña</button>
                 </form>
             </div>
         </div>
-        <a href="/article/{{article.id}}/edit" class="edit-link">Editar Artículo</a>
+        <a class="edit-link" href="/article/{{article.id}}/edit">Editar Artículo</a>
+        <a class="delete-link" href="/article/{{article.id}}/delete">Eliminar Artículo</a>
         <a class="back-link" href="/">Volver al Inicio</a>
     </div>
 

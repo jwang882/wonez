@@ -122,6 +122,6 @@ public class Article {
     @Override
     public String toString() {
         return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="
-                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + "]";
+                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + "]";
     }
 }

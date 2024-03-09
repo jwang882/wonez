@@ -47,7 +47,7 @@ public class ArticleRestController {
     @PostMapping("/")
     public ResponseEntity<Article> createArticle(@RequestBody Article article) {
 
-        articleService.save(article);
+        articleService.save(article,user);
 
         URI location;
         try {
@@ -73,7 +73,7 @@ public class ArticleRestController {
 
         // Actualiza los campos del artículo
         existingArticle.setCategory(updatedArticle.getCategory());
-        existingArticle.setUser(updatedArticle.getUser());
+
         existingArticle.setTitle(updatedArticle.getTitle());
         existingArticle.setSubtitle(updatedArticle.getSubtitle());
         existingArticle.setAuthor(updatedArticle.getAuthor());

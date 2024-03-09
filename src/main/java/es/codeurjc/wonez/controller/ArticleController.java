@@ -20,6 +20,7 @@ import es.codeurjc.wonez.service.ImageService;
 import es.codeurjc.wonez.service.ArticleService;
 import es.codeurjc.wonez.service.UserSession;
 import es.codeurjc.wonez.model.Comment;
+import es.codeurjc.wonez.model.User;
 
 
 @Controller
@@ -56,11 +57,14 @@ public class ArticleController {
 	@PostMapping("/article/new")
 	public String newArticle(Model model, Article article, MultipartFile image) throws IOException {
 
-		articleService.save(article);
+		User user = new User();
+		user.setUsername(userSession.getUser());
+
+		articleService.save(article, user);
 		
 		imageService.saveImage(ARTICLES_FOLDER, article.getId(), image);
 		
-		userSession.setUser(article.getUser());
+		userSession.setUser(user.getUsername());
 		userSession.incNumArticles();
 		
 		model.addAttribute("numArticles", userSession.getNumArticles());
@@ -81,7 +85,6 @@ public class ArticleController {
 
         // Update the existing article with the new values
         existingArticle.setCategory(updatedArticle.getCategory());
-        existingArticle.setUser(updatedArticle.getUser());
         existingArticle.setTitle(updatedArticle.getTitle());
         existingArticle.setSubtitle(updatedArticle.getSubtitle());
         existingArticle.setAuthor(updatedArticle.getAuthor());

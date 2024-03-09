@@ -55,14 +55,14 @@ public class ArticleController {
 	}
 	
 	@PostMapping("/article/new")
-	public String newArticle(Model model, Article article, MultipartFile image) throws IOException {
+	public String newArticle(Model model, Article article, MultipartFile imagePath) throws IOException {
 
 		User user = new User();
 		user.setUsername(userSession.getUser());
 
 		articleService.save(article, user);
 		
-		imageService.saveImage(ARTICLES_FOLDER, article.getId(), image);
+		imageService.saveImage(ARTICLES_FOLDER, article.getId(), imagePath);	
 		
 		userSession.setUser(user.getUsername());
 		userSession.incNumArticles();

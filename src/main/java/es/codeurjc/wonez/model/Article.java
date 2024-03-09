@@ -13,6 +13,7 @@ public class Article {
     private String subtitle;
     private String author;
     private String text;
+    private String image;
     private List<Comment> comments;
     private static long commentIdCounter = 0;
 
@@ -84,6 +85,14 @@ public class Article {
 
     public void setText(String text) {
         this.text = text;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 
     public List<Comment> getComments() {

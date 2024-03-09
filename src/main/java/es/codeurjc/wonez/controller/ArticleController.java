@@ -44,7 +44,7 @@ public class ArticleController {
 
 		return "index";
 	}
-
+	
 	@GetMapping("/article/new")
 	public String newArticleForm(Model model) {
 
@@ -54,11 +54,11 @@ public class ArticleController {
 	}
 	
 	@PostMapping("/article/new")
-	public String newArticle(Model model, Article article, MultipartFile image) throws IOException {
+	public String newArticle(Model model, Article article, MultipartFile imagePath) throws IOException {
 
 		articleService.save(article);
 		
-		imageService.saveImage(ARTICLES_FOLDER, article.getId(), image);
+		imageService.saveImage(ARTICLES_FOLDER, article.getId(), imagePath);	
 		
 		userSession.setUser(article.getUser());
 		userSession.incNumArticles();

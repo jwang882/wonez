@@ -1,18 +1,21 @@
 package es.codeurjc.wonez.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Article {
 
-    private Long id;
+    private Long id=null;
     private String category;
     private String user;
     private String title;
     private String subtitle;
     private String author;
     private String text;
+    private String image;
     private List<Comment> comments;
+    private static long commentIdCounter = 0;
 
     public Article() {
         this.comments = new ArrayList<>();
@@ -84,17 +87,41 @@ public class Article {
         this.text = text;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
     public List<Comment> getComments() {
         return comments;
     }
 
     public void addComment(Comment comment) {
+        comment.setId(generateCommentId());
         this.comments.add(comment);
+    }
+
+    public void deleteCommentById(Long commentId) {
+        Iterator<Comment> iterator = comments.iterator();
+        while (iterator.hasNext()) {
+            Comment comment = iterator.next();
+            if (comment.getId().equals(commentId)) {
+                iterator.remove();
+                break;
+            }
+        }
+    }
+
+    private synchronized static long generateCommentId() {
+        return commentIdCounter++;
     }
 
     @Override
     public String toString() {
         return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="
-                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + "]";
+                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + "]";
     }
 }

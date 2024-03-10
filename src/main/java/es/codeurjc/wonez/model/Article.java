@@ -118,22 +118,28 @@ public class Article {
 
     public void addUser(User user){
         users.add(user);
+        if (!user.getFavoriteArticles().contains(this)) {
+            user.getFavoriteArticles().add(this);
+        }
     }
 
     public void removeUser(User user){
-        Iterator<User> iterator = users.iterator();
-        while (iterator.hasNext()) {
-            User u = iterator.next();
-            if(u.getId().equals(user.getId())){
-                iterator.remove();
-                break;
+        users.remove(user);
+        user.getFavoriteArticles().remove(this);
+    }
+
+    public void setUsers(List<User> users) {
+         this.users = users;
+         for (User user : users) {
+            if (!user.getFavoriteArticles().contains(this)) {
+                user.getFavoriteArticles().add(this);
             }
         }
     }
 
     @Override
     public String toString() {
-        return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="
-                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + "]";
+        return "Article [id=" + id + ", category=" + category + ", title=" + title + ", subtitle="
+                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + ", favoritesCount=" + users.size() + "]";
     }
 }

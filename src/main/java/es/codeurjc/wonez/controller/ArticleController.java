@@ -60,7 +60,7 @@ public class ArticleController {
 		User user = new User();
 		user.setUsername(userSession.getUser());
 
-		articleService.save(article, user);
+		articleService.save(article);
 		
 		imageService.saveImage(ARTICLES_FOLDER, article.getId(), imagePath);	
 		

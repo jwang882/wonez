@@ -6,17 +6,17 @@ public class User {
     private Long id;
     private String username;
     private String password;
-    private List<Article> articles = new ArrayList<>();
+    private List<Article> FavoriteArticles = new ArrayList<>();
 
     public User(){
-        this.articles = new ArrayList<>();
+        this.FavoriteArticles = new ArrayList<>();
     }
 
     public User(Long id, String username, String password){
         this.id = id;
         this.username = username;
         this.password = password;
-        this.articles = new ArrayList<>();
+        this.FavoriteArticles = new ArrayList<>();
     }
 
     public Long getId(){
@@ -43,12 +43,22 @@ public class User {
         this.password = password;
     }
 
-    public List<Article> getArticles(){
-        return articles;
+    public List<Article> getFavoriteArticles(){
+        return FavoriteArticles;
     }
 
     public void setArticles(List<Article> articles){
-        this.articles = articles;
+        this.FavoriteArticles = articles;
+    }
+
+    public void addFavoriteArticle(Article article) {
+        this.FavoriteArticles.add(article);
+        article.getUsers().add(this); 
+    }
+
+    public void removeFavoriteArticle(Article article) {
+        this.FavoriteArticles.remove(article);
+        article.getUsers().remove(this);
     }
     
 }

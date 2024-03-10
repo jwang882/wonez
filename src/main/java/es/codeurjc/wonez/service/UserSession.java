@@ -7,9 +7,18 @@ import org.springframework.web.context.annotation.SessionScope;
 @SessionScope
 public class UserSession {
 
+    private Long userId; 
     private String user;
     private int numArticles;
     private int numComments;
+
+    public Long getUserId(){
+        return userId;
+    }
+
+    public void setUserId(Long userId){
+        this.userId = userId;
+    }
 
     public void setUser(String user) {
         this.user = user;

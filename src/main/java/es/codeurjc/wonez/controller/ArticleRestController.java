@@ -47,7 +47,7 @@ public class ArticleRestController {
     @PostMapping("/")
     public ResponseEntity<Article> createArticle(@RequestBody Article article) {
 
-        articleService.save(article,user);
+        articleService.save(article);
 
         URI location;
         try {

@@ -2,11 +2,9 @@ package es.codeurjc.wonez.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.List;
 
 import jakarta.servlet.http.HttpSession;
 import es.codeurjc.wonez.model.Article;
-import es.codeurjc.wonez.model.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

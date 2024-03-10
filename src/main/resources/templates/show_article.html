@@ -204,9 +204,11 @@
                     <a href="/article/{{article.id}}/delete-comment/{{id}}" class="delete-comment-link">Eliminar comentario</a>
                 </div>
                 {{/article.comments}}
+                {{^article.comments}}
+                <p>No hay comentarios aún.</p>
+                {{/article.comments}}
             </div>
 
-            <!-- Formulario para agregar comentario -->
             <div class="review-box">
                 <h2>Añadir una opinión</h2>
                 <form action="/article/{{article.id}}/add-comment" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
@@ -220,9 +222,20 @@
                     <textarea id="review" name="text"></textarea>
 
                     <button type="submit">Añadir Reseña</button>
-                </form>
+                </form>              
             </div>
         </div>
+        {{#isFavorite}}
+        <form action="/article/{{article.id}}/remove-favorite" method="post">
+            <button type="submit">Quitar de favoritos</button>
+        </form>
+        {{/isFavorite}}
+        {{^isFavorite}}
+        <form action="/article/{{article.id}}/add-favorite" method="post">
+            <button type="submit">Añadir a favoritos</button>
+        </form>
+        {{/isFavorite}}
+        
         <a class="edit-link" href="/article/{{article.id}}/edit">Editar Artículo</a>
         <a class="delete-link" href="/article/{{article.id}}/delete">Eliminar Artículo</a>
         <a class="back-link" href="/">Volver al Inicio</a>

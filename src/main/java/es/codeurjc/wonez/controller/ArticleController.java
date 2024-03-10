@@ -2,6 +2,7 @@ package es.codeurjc.wonez.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
+import java.util.Collections;
 
 import jakarta.servlet.http.HttpSession;
 import es.codeurjc.wonez.model.Article;
@@ -15,12 +16,11 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import es.codeurjc.wonez.service.ImageService;
-import es.codeurjc.wonez.service.ArticleService;
-import es.codeurjc.wonez.service.UserSession;
 import es.codeurjc.wonez.model.Comment;
 import es.codeurjc.wonez.model.User;
+import es.codeurjc.wonez.service.*;
 
 
 @Controller
@@ -36,6 +36,9 @@ public class ArticleController {
 	
 	@Autowired
 	private ImageService imageService;
+
+	@Autowired
+	private UserService userService;
 
 	@GetMapping("/")
 	public String showArticles(Model model, HttpSession session) {
@@ -97,20 +100,11 @@ public class ArticleController {
         return "show_article";
     }
 
-
-	@GetMapping("/article/{id}")
-	public String showArticle(Model model, @PathVariable long id) {
-		Article article = articleService.findById(id);
-		model.addAttribute("article", article);
-		model.addAttribute("comments", article.getComments()); // Asegúrate de añadir los comentarios al modelo
-		return "show_article";
-	}
-
 	
 	@GetMapping("/article/{id}/image")	
 	public ResponseEntity<Object> downloadImage(@PathVariable int id) throws MalformedURLException {
 
-		return imageService.createResponseFromImage(ARTICLES_FOLDER, id);		
+		return imageService.createResponseFromImage(ARTICLES_FOLDER, id-1);		
 	}
 	
 	@GetMapping("/article/{id}/delete")
@@ -143,4 +137,55 @@ public class ArticleController {
 		articleService.update(article);
 		return "redirect:/article/" + articleId;
 	}
+
+	@PostMapping("/article/{id}/add-favorite")
+	public String addFavorite(@PathVariable Long id, HttpSession session, RedirectAttributes redirectAttrs) {
+		Long userId = userSession.getUserId(); // Asume que has guardado el ID del usuario en la sesión
+		if (userId != null) {
+			User user = userService.findById(userId);
+			Article article = articleService.findById(id);
+			if (user != null && article != null) {
+				user.addFavoriteArticle(article);
+				article.addUser(user);
+				userService.save(user); // Guarda el usuario con su lista de favoritos actualizada
+				redirectAttrs.addFlashAttribute("message", "Artículo añadido a favoritos.");
+			}
+		}
+		return "redirect:/favorites"; 
+	}
+
+	@GetMapping("/article/{id}")
+	public String showArticle(Model model, @PathVariable long id, HttpSession session) {
+		Article article = articleService.findById(id);
+		session.setAttribute("lastViewedArticleId", id);
+	
+		Long userId = userSession.getUserId();
+		
+		User currentUser = userService.findById(userId);
+	
+		boolean isFavorite = currentUser != null && currentUser.getFavoriteArticles().contains(article);
+	
+		model.addAttribute("article", article);
+		model.addAttribute("isFavorite", isFavorite); // Agregar el flag de favorito al modelo
+		model.addAttribute("comments", article.getComments());
+
+		return "show_article"; 
+	}
+
+	@GetMapping("/favorites")
+	public String showFavorites(Model model, HttpSession session) {
+		Long userId = userSession.getUserId(); 
+		Long lastViewedArticleId = (Long) session.getAttribute("lastViewedArticleId");
+		model.addAttribute("lastViewedArticleId", lastViewedArticleId);
+		if (userId != null) {
+			User user = userService.findById(userId);
+			if (user != null) {
+				model.addAttribute("favorites", user.getFavoriteArticles());
+				return "favorites";
+			}
+		}
+		model.addAttribute("favorites", Collections.emptyList());
+		return "favorites";
+	}
+
 }

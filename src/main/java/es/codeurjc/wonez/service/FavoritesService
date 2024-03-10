@@ -1,0 +1,30 @@
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+@Service
+public class FavoritesService {
+
+    @Autowired
+    private UserService userService;
+
+    @Autowired
+    private ArticleService articleService;
+
+    public void addArticleToFavorites(Long userId, Long articleId) {
+        User user = userService.findById(userId);
+        Article article = articleService.findById(articleId);
+        if (user != null && article != null) {
+            user.addFavoriteArticle(article);
+            article.addFavoritedByUser(user);
+        }
+    }
+
+    public void removeArticleFromFavorites(Long userId, Long articleId) {
+        User user = userService.findById(userId);
+        Article article = articleService.findById(articleId);
+        if (user != null && article != null) {
+            user.removeFavoriteArticle(article);
+            article.removeFavoritedByUser(user);
+        }
+    }
+}

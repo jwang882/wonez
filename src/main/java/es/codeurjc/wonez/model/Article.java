@@ -6,7 +6,7 @@ import java.util.List;
 
 public class Article {
 
-    private Long id=null;
+    private Long id = null;
     private String category;
     private String title;
     private String subtitle;
@@ -15,11 +15,11 @@ public class Article {
     private String image;
     private List<Comment> comments;
     private static long commentIdCounter = 0;
-    private List<User> users;
+    private List<User> FavoriteUsers;
 
     public Article() {
         this.comments = new ArrayList<>();
-        this.users = new ArrayList<>();
+        this.FavoriteUsers = new ArrayList<>();
     }
 
     public Article(String category, String title, String subtitle, String author, String text) {
@@ -29,7 +29,7 @@ public class Article {
         this.author = author;
         this.text = text;
         this.comments = new ArrayList<>();
-        this.users = new ArrayList<>();
+        this.FavoriteUsers = new ArrayList<>();
     }
 
     public String getCategory() {
@@ -113,23 +113,23 @@ public class Article {
     }
 
     public List<User> getUsers(){
-        return users;
+        return FavoriteUsers;
     }
 
     public void addUser(User user){
-        users.add(user);
+        FavoriteUsers.add(user);
         if (!user.getFavoriteArticles().contains(this)) {
             user.getFavoriteArticles().add(this);
         }
     }
 
     public void removeUser(User user){
-        users.remove(user);
+        FavoriteUsers.remove(user);
         user.getFavoriteArticles().remove(this);
     }
 
     public void setUsers(List<User> users) {
-         this.users = users;
+         this.FavoriteUsers = users;
          for (User user : users) {
             if (!user.getFavoriteArticles().contains(this)) {
                 user.getFavoriteArticles().add(this);
@@ -140,6 +140,6 @@ public class Article {
     @Override
     public String toString() {
         return "Article [id=" + id + ", category=" + category + ", title=" + title + ", subtitle="
-                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + ", favoritesCount=" + users.size() + "]";
+                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + ", favoritesCount=" + FavoriteUsers.size() + "]";
     }
 }

@@ -1,32 +1,23 @@
 package es.codeurjc.wonez.service;
 
 import java.util.Collection;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.springframework.stereotype.Service;
 
 import es.codeurjc.wonez.model.Article;
-import jakarta.annotation.PostConstruct;
 
 @Service
 public class ArticleService {
 
-	private Map<Long, Article> articles = new HashMap<>();
-	private long nextId = 1;
+	private ConcurrentMap<Long, Article> articles = new ConcurrentHashMap<>();
+	private AtomicLong nextId = new AtomicLong();
 
 	public ArticleService() {
-	}
-
-	@PostConstruct
-	private void init(){
-
-        Article article1 = new Article("Fútbol", "Real Madrid gana las Champions", "Real Madrid subtitulo", "Alejandro", "Cuatro años después de la Decimotercera, ...");
-        Article article2 = new Article( "Basket", "Baskonia pierde su primer partido", "Baskonia subtitulo", "Jiayi", "En una noche que quedará grabada en la historia del baloncesto, ...");
-
-		save(article1);
-		save(article2);
-        
+		save(new Article("Fútbol","Wonez", "Real Madrid gana las Champions", "Real Madrid subtitulo","Alejandro","Cuatro años después de la Decimotercera, Real Madrid y Liverpool volvieron a encontrarse en la final. En la primera mitad se mantuvo el empate gracias a un espléndido Courtois, que fue designado MVP de la final. En la segunda, los de Ancelotti se pusieron por delante con un gol de Vini Jr. tras una gran jugada del equipo."));
+		save(new Article("Basket","Wonez", "Baskonia pierde su primer partido", "Baskonia subtitulo","Jiayi","En una noche que quedará grabada en la historia del baloncesto, el Equipo Nacional de Baloncesto se alzó con el título del Campeonato Mundial tras derrotar al equipo rival en un emocionante partido que culminó con un final de película. El marcador final fue de 98-97, con un tiro de tres puntos en los últimos segundos que determinó el destino del campeonato."));
 	}
 
 	public Collection<Article> findAll() {
@@ -37,10 +28,10 @@ public class ArticleService {
 		return articles.get(id);
 	}
 
-	public void save(Article article) {
-		long id = nextId++;
-		article.setId(id);
-		this.articles.put(id, article);
+	public void save(Article articles) {
+		long id = nextId.getAndIncrement();
+		articles.setId(id);
+		this.articles.put(id, articles);
 	}
 
 	public void deleteById(long id) {
@@ -53,5 +44,4 @@ public class ArticleService {
 			articles.put(id, updatedArticle);
 		}
 	}
-
 }

@@ -2,10 +2,8 @@ package es.codeurjc.wonez.controller;
 
 import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.model.Comment;
-import es.codeurjc.wonez.model.User;
 import es.codeurjc.wonez.service.ArticleService;
 import es.codeurjc.wonez.service.ImageService;
-import es.codeurjc.wonez.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -28,9 +26,6 @@ public class ArticleRestController {
 
     @Autowired
     private ImageService imageService;
-
-    @Autowired
-    private UserService userService;
 
     @GetMapping("/")
     public Collection<Article> getArticles() {
@@ -78,7 +73,7 @@ public class ArticleRestController {
 
         // Actualiza los campos del artículo
         existingArticle.setCategory(updatedArticle.getCategory());
-
+        existingArticle.setUser(updatedArticle.getUser());
         existingArticle.setTitle(updatedArticle.getTitle());
         existingArticle.setSubtitle(updatedArticle.getSubtitle());
         existingArticle.setAuthor(updatedArticle.getAuthor());
@@ -193,22 +188,4 @@ public class ArticleRestController {
             return ResponseEntity.notFound().build();
         }
     }
-
-    @PostMapping("/api/articles/{id}/Favorite")
-    public ResponseEntity<Void> FavoriteApi(@PathVariable Long id){
-        Article article = articleService.findById(id);
-        User user = userService.findById(1L); 
-        
-        if(user != null && article != null) {
-            if(user.getFavoriteArticles().contains(article)) {
-                user.removeFavoriteArticle(article);
-            } else {
-                user.addFavoriteArticle(article);
-            }
-
-            return ResponseEntity.ok().build();
-        }
-        return ResponseEntity.notFound().build();
-    }
-
 }

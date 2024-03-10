@@ -6,8 +6,9 @@ import java.util.List;
 
 public class Article {
 
-    private Long id = null;
+    private Long id=null;
     private String category;
+    private String user;
     private String title;
     private String subtitle;
     private String author;
@@ -15,21 +16,19 @@ public class Article {
     private String image;
     private List<Comment> comments;
     private static long commentIdCounter = 0;
-    private List<User> FavoriteUsers;
 
     public Article() {
         this.comments = new ArrayList<>();
-        this.FavoriteUsers = new ArrayList<>();
     }
 
-    public Article(String category, String title, String subtitle, String author, String text) {
+    public Article(String category, String user, String title, String subtitle, String author, String text) {
         this.category = category;
+        this.user = user;
         this.title = title;
         this.subtitle = subtitle;
         this.author = author;
         this.text = text;
         this.comments = new ArrayList<>();
-        this.FavoriteUsers = new ArrayList<>();
     }
 
     public String getCategory() {
@@ -46,6 +45,14 @@ public class Article {
 
     public void setId(long id) {
         this.id = id;
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user;
     }
 
     public String getTitle() {
@@ -112,34 +119,9 @@ public class Article {
         return commentIdCounter++;
     }
 
-    public List<User> getUsers(){
-        return FavoriteUsers;
-    }
-
-    public void addUser(User user){
-        FavoriteUsers.add(user);
-        if (!user.getFavoriteArticles().contains(this)) {
-            user.getFavoriteArticles().add(this);
-        }
-    }
-
-    public void removeUser(User user){
-        FavoriteUsers.remove(user);
-        user.getFavoriteArticles().remove(this);
-    }
-
-    public void setUsers(List<User> users) {
-         this.FavoriteUsers = users;
-         for (User user : users) {
-            if (!user.getFavoriteArticles().contains(this)) {
-                user.getFavoriteArticles().add(this);
-            }
-        }
-    }
-
     @Override
     public String toString() {
-        return "Article [id=" + id + ", category=" + category + ", title=" + title + ", subtitle="
-                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + ", favoritesCount=" + FavoriteUsers.size() + "]";
+        return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="
+                + subtitle + ", author=" + author + ", text=" + text + ", comments=" + comments + ", image=" + image + "]";
     }
 }

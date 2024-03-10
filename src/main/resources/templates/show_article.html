@@ -222,20 +222,9 @@
                     <textarea id="review" name="text"></textarea>
 
                     <button type="submit">Añadir Reseña</button>
-                </form>              
+                </form>
             </div>
         </div>
-        {{#isFavorite}}
-        <form action="/article/{{article.id}}/remove-favorite" method="post">
-            <button type="submit">Quitar de favoritos</button>
-        </form>
-        {{/isFavorite}}
-        {{^isFavorite}}
-        <form action="/article/{{article.id}}/add-favorite" method="post">
-            <button type="submit">Añadir a favoritos</button>
-        </form>
-        {{/isFavorite}}
-        
         <a class="edit-link" href="/article/{{article.id}}/edit">Editar Artículo</a>
         <a class="delete-link" href="/article/{{article.id}}/delete">Eliminar Artículo</a>
         <a class="back-link" href="/">Volver al Inicio</a>

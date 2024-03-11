@@ -6,21 +6,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Wonez</title>
     <link rel="icon" href="/wonez.ico" type="image/x-icon">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet"> <!--Bootstrap for styles-->
 
     <style>
         h2 {
+            /* Centers the heading text and adds top margin */
             text-align: center;
             margin-top: 50px;
         }
 
         body {
+            /* Background image that covers the entire body, font family, center of the content, height of the body to 100% of the viewport with a margin */
             background-image: url(https://image-component.nextjs.gallery/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmountains.a2eb1d50.jpg&w=3840&q=100);
             background-size: cover;
             font-family: 'Arial';
             align-items: center;
             justify-content: center;
-            background-color: #f0f0f0;
             height: 100vh;
             margin: 0 auto;
         }
@@ -47,23 +48,22 @@
 
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <a class="navbar-brand" href="/">Wonez</a>
-<<<<<<< HEAD
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark"> <!--Navigation expandable bar-->
+        <a class="navbar-brand" href="/">Wonez</a> <!--Navigation link-->
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-=======
+
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
->>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
-            <ul class="navbar-nav">
+            <ul class="navbar-nav"> <!--List of navigation items-->
                 <li class="nav-item active">
-                    <a class="nav-link" href="/">Inicio</a>
+                    <a class="nav-link" href="/">Inicio</a> <!--Link to home-->
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="/article/new">Nuevo artículo</a>
+                    <a class="nav-link" href="/article/new">Nuevo artículo</a> <!--Link to add an article-->
                 </li>
             </ul>
         </div>
@@ -73,12 +73,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-<<<<<<< HEAD
+    <!--Form for edit an article on submit-->
     <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
         onsubmit="return validateForm()">
-=======
+
     <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return validateForm()">
->>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
+        <!--Input fields-->
         <div class="error-message" id="globalError"></div>
         <p>CATEGORÍA:</p>
         <input type="text" name="category" value="{{article.category}}">
@@ -110,7 +110,7 @@
             var authorInput = document.getElementById('authorInput');
             var globalError = document.getElementById('globalError');
 
-
+            //Validation with error messages
             if ((titleInput.value.trim() == "") && (authorInput.value.trim() == "")) {
                 globalError.textContent = "Por favor, rellene el campo\"Título\" y \"Autor\"";
                 return false;

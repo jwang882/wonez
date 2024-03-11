@@ -40,6 +40,7 @@
 </head>
 <body>
 
+	<!--Navigation bar-->
 	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Wonez</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,13 +58,8 @@
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
-
-<<<<<<< HEAD
-	<form action="/article/new" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return validateForm()">
-		<div class="error-message" id="globalError"></div>
-=======
+	<!--Form to add a new article-->
 	<form action="/article/new" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
->>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
 		<p>CATEGORÍA: </p>
 		<input type='text' name='category'/>
 		<p>USUARIO: </p>
@@ -81,7 +77,9 @@
 
 		<input type='submit' value='Save'/>
 	</form>
+
 	<script>
+		//Validation of title and author
         function validateForm() {
             var titleInput = document.getElementById('titleInput');
             var authorInput = document.getElementById('authorInput');

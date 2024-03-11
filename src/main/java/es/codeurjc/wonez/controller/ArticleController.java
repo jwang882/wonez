@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.wonez.service.ImageService;
@@ -76,23 +77,36 @@ public class ArticleController {
     }
 
 	@PostMapping("/article/{id}/edit")
-    public String editArticle(Model model, @PathVariable long id, @ModelAttribute Article updatedArticle) {
-        Article existingArticle = articleService.findById(id);
+		public String editArticle(
+			Model model,
+			@PathVariable long id,
+			@ModelAttribute Article updatedArticle,
+			@RequestParam(required = false) MultipartFile imagePath
+		) {
+			Article existingArticle = articleService.findById(id);
 
-        // Update the existing article with the new values
-        existingArticle.setCategory(updatedArticle.getCategory());
-        existingArticle.setUser(updatedArticle.getUser());
-        existingArticle.setTitle(updatedArticle.getTitle());
-        existingArticle.setSubtitle(updatedArticle.getSubtitle());
-        existingArticle.setAuthor(updatedArticle.getAuthor());
-        existingArticle.setText(updatedArticle.getText());
+			// Update the existing article with the new values
+			existingArticle.setCategory(updatedArticle.getCategory());
+			existingArticle.setUser(updatedArticle.getUser());
+			existingArticle.setTitle(updatedArticle.getTitle());
+			existingArticle.setSubtitle(updatedArticle.getSubtitle());
+			existingArticle.setAuthor(updatedArticle.getAuthor());
+			existingArticle.setText(updatedArticle.getText());
 
-        articleService.update(existingArticle);
+			if (imagePath != null && !imagePath.isEmpty()) {
+				// Si se proporciona una nueva imagen, guárdala y actualiza la ruta en el artículo
+				try {
+					imageService.saveImage(ARTICLES_FOLDER, existingArticle.getId(), imagePath);
+				} catch (IOException e) {
+					// Manejar la excepción en caso de error al guardar la imagen
+					e.printStackTrace();
+				}
+			}
+			articleService.update(existingArticle);
+			model.addAttribute("article", existingArticle);
+			return "show_article";
+		}
 
-        model.addAttribute("article", existingArticle);
-
-        return "show_article";
-    }
 
 
 	@GetMapping("/article/{id}")

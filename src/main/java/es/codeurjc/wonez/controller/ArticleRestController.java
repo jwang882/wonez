@@ -163,6 +163,35 @@ public class ArticleRestController {
         }
     }
 
+    @GetMapping("/{id}/comments/")
+    public ResponseEntity<Collection<Comment>> getCommentsByArticleId(@PathVariable long id) {
+        Article article = articleService.findById(id);
+
+        if (article != null) {
+            Collection<Comment> comments = article.getComments();
+            return ResponseEntity.ok(comments);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    @GetMapping("/{articleId}/comments/{commentId}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable long articleId, @PathVariable long commentId) {
+        Article article = articleService.findById(articleId);
+
+        if (article != null) {
+            Comment comment = article.getCommentById(commentId);
+
+            if (comment != null) {
+                return ResponseEntity.ok(comment);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
     @PostMapping("/{id}/comments/")
     public ResponseEntity<Article> addComment(@PathVariable long id, @RequestBody Comment newComment) {
         Article article = articleService.findById(id);
@@ -170,10 +199,19 @@ public class ArticleRestController {
         if (article != null) {
             article.addComment(newComment);
             articleService.update(article);
-            return ResponseEntity.ok(article);
+
+            // Devuelve un ResponseEntity con código 201 y la URI del nuevo recurso creado
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{commentId}")
+                    .buildAndExpand(newComment.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).body(article);
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
     @DeleteMapping("/{articleId}/comments/{commentId}")

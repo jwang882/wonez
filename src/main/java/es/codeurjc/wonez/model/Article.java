@@ -115,6 +115,15 @@ public class Article {
         }
     }
 
+    public Comment getCommentById(long commentId) {
+        for (Comment comment : comments) {
+            if (comment.getId() == commentId) {
+                return comment;
+            }
+        }
+        return null;  // Si no se encuentra el comentario con el ID dado
+    }
+    
     private synchronized static long generateCommentId() {
         return commentIdCounter++;
     }

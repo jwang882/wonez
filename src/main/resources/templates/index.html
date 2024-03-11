@@ -12,7 +12,7 @@
         body{
             font-family: "Arial", sans-serif;
             margin: 0;
-            padding-top: 56px; /* Altura del navbar para asegurar que el contenido no se superponga */
+            padding-top: 56px; 
             display: flex;
             flex-direction: column;
         }
@@ -22,14 +22,14 @@
         }
 
         .wonez-title img {
-            width: 150vw; /* ancho al 80% del ancho de la ventana de cualquier navegador */
-            max-width: 300px; /*el ancho maximo de 300 px */
-            display: block; /* imagen como bloque */
-            margin: 0 auto; /* centra la imagen */
+            width: 150vw; 
+            max-width: 300px;
+            display: block; 
+            margin: 0 auto; 
         }
 
         .welcome-message h1 {
-            font-size: 1.2em; /* aumenta el tamaño de la fuente del mensaje */
+            font-size: 1.2em; 
             margin-bottom: 20px;
             text-align: center;
         }
@@ -47,22 +47,22 @@
         }
 
         .article-image-container:hover, .article-image-container:focus {
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Añade una sombra pronunciada para el efecto "raise" */
-            transform: translateY(-0.05em); /* Eleva la imagen */
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* Raise effect */
+            transform: translateY(-0.05em); /* Zoom image */
         }
 
         .article-image {
             width: 90vw;
             max-width: 800px;
             height: auto;
-            border-radius: 5px; /* Opcional: añade bordes redondeados a la imagen */
+            border-radius: 5px; 
         }
 
         .article-category {
             position: absolute;
             margin: 7px;
-            top: 0; left: 0; /* Ubica la etiqueta de categoría en la esquina superior izquierda */
-            background-color:  #62D9AD;
+            top: 0; left: 0; /* Category on the top of the article image */
+            background-color: #62D9AD;
             color: #fff;
             padding: 5px;
             border-radius: 5px;
@@ -85,9 +85,9 @@
             text-decoration: none;
             margin: 20px auto;
             padding: 10px 20px;
-            color: #000000; /* Color de texto inicial */
+            color: #000000; 
             text-align: center;
-            border: 2px solid #000000; /* Color de borde inicial */
+            border: 2px solid #000000; 
             border-radius: 5px;
             cursor: pointer;
             max-width: 200px;
@@ -103,6 +103,7 @@
             color: #000000; 
             box-shadow: 0 0.5em 0.5em -0.4em var(--hover); 
             transform: translateY(-0.25em); 
+            text-decoration: none;
         }
 
 
@@ -131,7 +132,7 @@
         }
 
         .content {
-            margin-left: 200px; /* Asegura que el contenido principal no se superponga con la sidebar */
+            margin-left: 200px; 
             padding: 10px;
             flex-grow: 1;
         }
@@ -144,12 +145,14 @@
             bottom: 0;
             left: 0;
             width: 100%;
-            z-index: 1020; /* Asegura que el footer se muestre adecuadamente */
+            z-index: 1020; 
         }
 
     </style>
 </head>
 <body>
+
+    <!--Bootstrap navigation bar with links to home and new article-->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Wonez</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -166,6 +169,7 @@
             </ul>
         </div>
     </nav>
+
     <div class="wonez-title">
         <img src="/wonez-title-image.png" alt="Wonez - Noticias Deportivas">
     </div>
@@ -176,6 +180,7 @@
     </div>
     {{/welcome}}
     
+    <!--List of available articles-->
     {{#articles}}
     <div class="article-list">
         <a href="article/{{id}}" class="article-image-container">
@@ -189,10 +194,12 @@
     </div>
     {{/articles}}
     
+    <!--No articles display-->
     {{^articles}}
         <p>No hay artículos aún</p>
     {{/articles}}
 
+    <!--Sidebar with a summary list of articles-->
     <aside class="sidebar">
         <h3>Resumen artículos</h3>
         <ul class="sidebar-list">
@@ -202,8 +209,10 @@
         </ul>
     </aside>
 
+    <!--Link to create a new article-->
     <a class="new-article-link" href="article/new">Nuevo artículo</a>
 
+    <!--Footer content-->
     <footer class="footer">
         <p>&copy; 2024 Wonez. Todos los derechos reservados.</p>
     </footer>

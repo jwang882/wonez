@@ -146,17 +146,26 @@ public class Article {
         }
     }
 
+<<<<<<< HEAD
     // Method to get a comment by its ID
+=======
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     public Comment getCommentById(long commentId) {
         for (Comment comment : comments) {
             if (comment.getId() == commentId) {
                 return comment;
             }
         }
+<<<<<<< HEAD
         return null;
     }
 
     // Method to generate a unique comment ID in a synchronized manner
+=======
+        return null;  // Si no se encuentra el comentario con el ID dado
+    }
+    
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     private synchronized static long generateCommentId() {
         return commentIdCounter++;
     }

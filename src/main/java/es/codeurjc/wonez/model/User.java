@@ -1,5 +1,6 @@
 package es.codeurjc.wonez.model;
 
+<<<<<<< HEAD
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +17,16 @@ public class User {
     }
 
     // Getter and setter methods for user attributes
+=======
+
+public class User {
+
+    private String username;
+
+    public User() {
+    }
+
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     public String getUsername() {
         return username;
     }
@@ -24,6 +35,7 @@ public class User {
         this.username = username;
     }
 
+<<<<<<< HEAD
     // Method to get the list of favorite articles for the user
     public List<Article> getFavoriteArticles() {
         return favoriteArticles;
@@ -39,3 +51,6 @@ public class User {
         favoriteArticles.remove(article);
     }
 }
+=======
+}
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df

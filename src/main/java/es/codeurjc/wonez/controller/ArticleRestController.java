@@ -184,7 +184,10 @@ public class ArticleRestController {
         }
     }
 
+<<<<<<< HEAD
     // Get comments for a specific article by ID
+=======
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     @GetMapping("/{id}/comments/")
     public ResponseEntity<Collection<Comment>> getCommentsByArticleId(@PathVariable long id) {
         Article article = articleService.findById(id);
@@ -197,7 +200,10 @@ public class ArticleRestController {
         }
     }
 
+<<<<<<< HEAD
     // Get a specific comment by ID for a given article
+=======
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     @GetMapping("/{articleId}/comments/{commentId}")
     public ResponseEntity<Comment> getCommentById(@PathVariable long articleId, @PathVariable long commentId) {
         Article article = articleService.findById(articleId);
@@ -215,7 +221,10 @@ public class ArticleRestController {
         }
     }
 
+<<<<<<< HEAD
     // Add a new comment to a specific article
+=======
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
     @PostMapping("/{id}/comments/")
     public ResponseEntity<Article> addComment(@PathVariable long id, @RequestBody Comment newComment) {
         Article article = articleService.findById(id);
@@ -224,7 +233,11 @@ public class ArticleRestController {
             article.addComment(newComment);
             articleService.update(article);
 
+<<<<<<< HEAD
             // Return a ResponseEntity with status 201 and the URI of the new created resource
+=======
+            // Devuelve un ResponseEntity con código 201 y la URI del nuevo recurso creado
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
             URI location = ServletUriComponentsBuilder
                     .fromCurrentRequest()
                     .path("/{commentId}")
@@ -235,6 +248,7 @@ public class ArticleRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
+
     }
 
     // Delete a comment by ID for a specific article

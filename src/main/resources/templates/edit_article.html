@@ -7,6 +7,7 @@
     <title>Wonez</title>
     <link rel="icon" href="/wonez.ico" type="image/x-icon">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css" rel="stylesheet">
+<<<<<<< HEAD
 
     <style>
         h2 {
@@ -45,12 +46,58 @@
     </style>
 </head>
 
+=======
+</head>
+
+<style>
+
+    h2 {
+        text-align: center;
+        margin-top: 50px;
+    }
+	
+    body {
+        background-image: url(https://image-component.nextjs.gallery/_next/image?url=%2F_next%2Fstatic%2Fmedia%2Fmountains.a2eb1d50.jpg&w=3840&q=100);
+        background-size: cover;
+        font-family: 'Arial';
+			align-items: center;
+			justify-content: center;
+			background-color: #f0f0f0;
+			height: 100vh;
+			margin: 0 auto;
+    }
+
+
+    form {
+        max-width: 500px;
+        margin: 0 auto;
+        margin-top: 100px;
+        background-color: #f9f9f9;
+        padding: 10px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(102, 100, 100, 0.1);
+    }
+
+    .error-message {
+        color: red;
+        font-size: 0.8rem;
+        margin-top: -10px;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
 <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <a class="navbar-brand" href="/">Wonez</a>
+<<<<<<< HEAD
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
             aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+=======
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavDropdown">
@@ -69,8 +116,12 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
+<<<<<<< HEAD
     <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
         onsubmit="return validateForm()">
+=======
+    <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return validateForm()">
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
         <div class="error-message" id="globalError"></div>
         <p>CATEGORÍA:</p>
         <input type="text" name="category" value="{{article.category}}">
@@ -103,21 +154,34 @@
             var globalError = document.getElementById('globalError');
 
 
+<<<<<<< HEAD
             if ((titleInput.value.trim() == "") && (authorInput.value.trim() == "")) {
+=======
+            if ((titleInput.value.trim() == "") && (authorInput.value.trim() == "")){
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
                 globalError.textContent = "Por favor, rellene el campo\"Título\" y \"Autor\"";
                 return false;
             } else if (titleInput.value.trim() == "") {
                 globalError.textContent = "Por favor, rellene el campo\"Título\"";
                 return false;
+<<<<<<< HEAD
             } else if (authorInput.value.trim() == "") {
+=======
+            } else if (authorInput.value.trim() == ""){
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
                 globalError.textContent = "Por favor, rellene el campo\"Autor\"";
                 return false;
             } else {
                 globalError.textContent = "";
                 return true;
             }
+<<<<<<< HEAD
         }
     </script>
+=======
+        }
+    </script>
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
 
 </body>
 

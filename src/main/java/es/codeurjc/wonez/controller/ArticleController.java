@@ -71,6 +71,7 @@ public class ArticleController {
         return "edit_article";
     }
 
+<<<<<<< HEAD
     // Handle the submission of an edited article
     @PostMapping("/article/{id}/edit")
     public String editArticle(
@@ -80,15 +81,26 @@ public class ArticleController {
             @RequestParam(required = false) MultipartFile imagePath
     ) {
         Article existingArticle = articleService.findById(id);
+=======
+	@PostMapping("/article/{id}/edit")
+		public String editArticle(
+			Model model,
+			@PathVariable long id,
+			@ModelAttribute Article updatedArticle,
+			@RequestParam(required = false) MultipartFile imagePath
+		) {
+			Article existingArticle = articleService.findById(id);
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
 
-        // Update the existing article with the new values
-        existingArticle.setCategory(updatedArticle.getCategory());
-        existingArticle.setUser(updatedArticle.getUser());
-        existingArticle.setTitle(updatedArticle.getTitle());
-        existingArticle.setSubtitle(updatedArticle.getSubtitle());
-        existingArticle.setAuthor(updatedArticle.getAuthor());
-        existingArticle.setText(updatedArticle.getText());
+			// Update the existing article with the new values
+			existingArticle.setCategory(updatedArticle.getCategory());
+			existingArticle.setUser(updatedArticle.getUser());
+			existingArticle.setTitle(updatedArticle.getTitle());
+			existingArticle.setSubtitle(updatedArticle.getSubtitle());
+			existingArticle.setAuthor(updatedArticle.getAuthor());
+			existingArticle.setText(updatedArticle.getText());
 
+<<<<<<< HEAD
         // Save the new article image if provided
         if (imagePath != null && !imagePath.isEmpty()) {
             try {
@@ -102,6 +114,22 @@ public class ArticleController {
         model.addAttribute("article", existingArticle);
         return "show_article";
     }
+=======
+			if (imagePath != null && !imagePath.isEmpty()) {
+				// Si se proporciona una nueva imagen, guárdala y actualiza la ruta en el artículo
+				try {
+					imageService.saveImage(ARTICLES_FOLDER, existingArticle.getId(), imagePath);
+				} catch (IOException e) {
+					// Manejar la excepción en caso de error al guardar la imagen
+					e.printStackTrace();
+				}
+			}
+			articleService.update(existingArticle);
+			model.addAttribute("article", existingArticle);
+			return "show_article";
+		}
+
+>>>>>>> 69f88c80fa088422bac3791c5437537e5a0475df
 
     // Handle the request to display an article by its ID
     @GetMapping("/article/{id}")

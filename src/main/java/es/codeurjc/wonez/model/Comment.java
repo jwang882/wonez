@@ -2,20 +2,24 @@ package es.codeurjc.wonez.model;
 
 public class Comment {
 
-    private Long id=null;
+    // Comment attributes
+    private Long id = null;
     private String user;
     private String text;
     private int score;
 
+    // Default constructor
     public Comment() {
     }
 
+    // Parameterized constructor for creating a comment with details
     public Comment(String user, String text, int score) {
         this.user = user;
         this.text = text;
         this.score = score;
     }
 
+    // Getter and setter methods for comment attributes
     public Long getId() {
         return id;
     }
@@ -48,6 +52,7 @@ public class Comment {
         this.score = score;
     }
 
+    // toString method for easy debugging and logging
     @Override
     public String toString() {
         return "Comment [id=" + id + ", user=" + user + ", text=" + text + ", score=" + score + "]";

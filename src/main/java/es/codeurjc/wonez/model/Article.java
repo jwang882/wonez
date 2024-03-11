@@ -6,7 +6,8 @@ import java.util.List;
 
 public class Article {
 
-    private Long id=null;
+    // Article attributes
+    private Long id = null;
     private String category;
     private String user;
     private String title;
@@ -14,13 +15,21 @@ public class Article {
     private String author;
     private String text;
     private String image;
+    
+    // Lists to store comments and users who favorited the article
     private List<Comment> comments;
+    private List<User> favoritedBy;
+
+    // Counter for generating unique comment IDs
     private static long commentIdCounter = 0;
 
+    // Default constructor initializing lists
     public Article() {
         this.comments = new ArrayList<>();
+        this.favoritedBy = new ArrayList<>();
     }
 
+    // Parameterized constructor for creating an article with basic details
     public Article(String category, String user, String title, String subtitle, String author, String text) {
         this.category = category;
         this.user = user;
@@ -31,6 +40,7 @@ public class Article {
         this.comments = new ArrayList<>();
     }
 
+    // Getter and setter methods for article attributes
     public String getCategory() {
         return category;
     }
@@ -99,11 +109,32 @@ public class Article {
         return comments;
     }
 
+    public List<User> getFavoritedBy() {
+        return favoritedBy;
+    }
+
+    // Method to add a user to the list of favoritedBy
+    public void addFavoritedBy(User user) {
+        favoritedBy.add(user);
+    }
+
+    // Method to check if the article is favorited by a specific user
+    public boolean isFavoritedBy(User user) {
+        return favoritedBy.contains(user);
+    }
+
+    // Method to remove a user from the list of favoritedBy
+    public void removeFavoritedBy(User user) {
+        favoritedBy.remove(user);
+    }
+
+    // Method to add a comment to the article
     public void addComment(Comment comment) {
         comment.setId(generateCommentId());
         this.comments.add(comment);
     }
 
+    // Method to delete a comment by its ID
     public void deleteCommentById(Long commentId) {
         Iterator<Comment> iterator = comments.iterator();
         while (iterator.hasNext()) {
@@ -115,10 +146,22 @@ public class Article {
         }
     }
 
+    // Method to get a comment by its ID
+    public Comment getCommentById(long commentId) {
+        for (Comment comment : comments) {
+            if (comment.getId() == commentId) {
+                return comment;
+            }
+        }
+        return null;
+    }
+
+    // Method to generate a unique comment ID in a synchronized manner
     private synchronized static long generateCommentId() {
         return commentIdCounter++;
     }
 
+    // toString method for easy debugging and logging
     @Override
     public String toString() {
         return "Article [id=" + id + ", category=" + category + ", user=" + user + ", title=" + title + ", subtitle="

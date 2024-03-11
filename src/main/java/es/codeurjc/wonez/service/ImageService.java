@@ -16,44 +16,58 @@ import org.springframework.web.multipart.MultipartFile;
 @Service
 public class ImageService {
 
-	private static final Path FILES_FOLDER = Paths.get(System.getProperty("user.dir"), "images");
+    // Folder path to store images
+    private static final Path FILES_FOLDER = Paths.get(System.getProperty("user.dir"), "images");
 
-	private Path createFilePath(long imageId, Path folder) {
-		return folder.resolve("image-" + imageId + ".jpg");
-	}
-	
-	public void saveImage(String folderName, long imageId, MultipartFile image) throws IOException {
+    // Method to create a file path based on image ID and folder
+    private Path createFilePath(long imageId, Path folder) {
+        return folder.resolve("image-" + imageId + ".jpg");
+    }
 
-		Path folder = FILES_FOLDER.resolve(folderName);
+    // Method to save an image to the specified folder
+    public void saveImage(String folderName, long imageId, MultipartFile image) throws IOException {
 
-		Files.createDirectories(folder);
-		
-		Path newFile = createFilePath(imageId, folder);
+        Path folder = FILES_FOLDER.resolve(folderName);
 
-		image.transferTo(newFile);
-	}
+        // Create directories if they do not exist
+        Files.createDirectories(folder);
 
-	public ResponseEntity<Object> createResponseFromImage(String folderName, long imageId) throws MalformedURLException {
+        // Create a new file path for the image
+        Path newFile = createFilePath(imageId, folder);
 
-		Path folder = FILES_FOLDER.resolve(folderName);
-		
-		Path imagePath = createFilePath(imageId, folder);
-		
-		Resource file = new UrlResource(imagePath.toUri());
-		
-		if(!Files.exists(imagePath)) {
-			return ResponseEntity.notFound().build();
-		} else {
-			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(file);
-		}		
-	}
+        // Transfer the image content to the new file
+        image.transferTo(newFile);
+    }
 
-	public void deleteImage(String folderName, long imageId) throws IOException {
+    // Method to create a response entity for retrieving an image by ID
+    public ResponseEntity<Object> createResponseFromImage(String folderName, long imageId) throws MalformedURLException {
 
-		Path folder = FILES_FOLDER.resolve(folderName);
+        Path folder = FILES_FOLDER.resolve(folderName);
 
-		Path imageFile = createFilePath(imageId, folder);
-		
-		Files.deleteIfExists(imageFile);				
-	}
+        // Create a file path for the specified image ID
+        Path imagePath = createFilePath(imageId, folder);
+
+        // Create a resource from the image path
+        Resource file = new UrlResource(imagePath.toUri());
+
+        // Check if the file exists
+        if (!Files.exists(imagePath)) {
+            return ResponseEntity.notFound().build();
+        } else {
+            // Return a response entity with the image content
+            return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(file);
+        }
+    }
+
+    // Method to delete an image by ID from the specified folder
+    public void deleteImage(String folderName, long imageId) throws IOException {
+
+        Path folder = FILES_FOLDER.resolve(folderName);
+
+        // Create a file path for the specified image ID
+        Path imageFile = createFilePath(imageId, folder);
+
+        // Delete the image file if it exists
+        Files.deleteIfExists(imageFile);
+    }
 }

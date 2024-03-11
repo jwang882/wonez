@@ -19,6 +19,7 @@ import java.util.Collection;
 @RequestMapping("/api/articles")
 public class ArticleRestController {
 
+    // Folder to store article images
     private static final String ARTICLES_FOLDER = "articles";
 
     @Autowired
@@ -27,14 +28,15 @@ public class ArticleRestController {
     @Autowired
     private ImageService imageService;
 
+    // Get all articles
     @GetMapping("/")
     public Collection<Article> getArticles() {
         return articleService.findAll();
     }
 
+    // Get a specific article by ID
     @GetMapping("/{id}")
     public ResponseEntity<Article> getArticle(@PathVariable long id) {
-
         Article article = articleService.findById(id);
 
         if (article != null) {
@@ -44,11 +46,37 @@ public class ArticleRestController {
         }
     }
 
+    // Create a new article
     @PostMapping("/")
-    public ResponseEntity<Article> createArticle(@RequestBody Article article) {
+    public ResponseEntity<Article> createArticle(
+            @ModelAttribute Article formData,
+            @RequestParam(value = "imagePath", required = false) MultipartFile imagePath) {
 
+        // Create an instance of Article with form data
+        Article article = new Article();
+        article.setCategory(formData.getCategory());
+        article.setUser(formData.getUser());
+        article.setTitle(formData.getTitle());
+        article.setSubtitle(formData.getSubtitle());
+        article.setAuthor(formData.getAuthor());
+        article.setText(formData.getText());
+
+        // Save the article
         articleService.save(article);
 
+        // Save the image if provided
+        if (imagePath != null) {
+            try {
+                URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
+                article.setImage(location.toString());
+                articleService.update(article);
+                imageService.saveImage(ARTICLES_FOLDER, article.getId(), imagePath);
+            } catch (IOException e) {
+                return ResponseEntity.badRequest().build();
+            }
+        }
+
+        // Return a successful response with the created article
         URI location;
         try {
             location = new URI("/api/articles/" + article.getId());
@@ -59,6 +87,7 @@ public class ArticleRestController {
         return ResponseEntity.created(location).body(article);
     }
 
+    // Update an existing article
     @PutMapping("/{id}")
     public ResponseEntity<Article> replaceArticle(
             @PathVariable long id,
@@ -71,7 +100,7 @@ public class ArticleRestController {
             return ResponseEntity.notFound().build();
         }
 
-        // Actualiza los campos del artículo
+        // Update the fields of the article
         existingArticle.setCategory(updatedArticle.getCategory());
         existingArticle.setUser(updatedArticle.getUser());
         existingArticle.setTitle(updatedArticle.getTitle());
@@ -79,7 +108,7 @@ public class ArticleRestController {
         existingArticle.setAuthor(updatedArticle.getAuthor());
         existingArticle.setText(updatedArticle.getText());
 
-        // Actualiza la imagen si se proporciona una nueva
+        // Update the image if a new one is provided
         if (newImage != null) {
             try {
                 URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
@@ -91,21 +120,21 @@ public class ArticleRestController {
             }
         }
 
-        // Guarda la actualización del artículo
+        // Save the updated article
         articleService.update(existingArticle);
 
         return ResponseEntity.ok(existingArticle);
     }
 
-
+    // Delete an article by ID
     @DeleteMapping("/{id}")
     public ResponseEntity<Article> deleteArticle(@PathVariable long id) throws IOException {
-
         Article article = articleService.findById(id);
 
         if (article != null) {
             articleService.deleteById(id);
 
+            // Delete the associated image if exists
             if (article.getImage() != null) {
                 this.imageService.deleteImage(ARTICLES_FOLDER, id);
             }
@@ -116,6 +145,7 @@ public class ArticleRestController {
         }
     }
 
+    // Upload an image for a specific article
     @PostMapping("/{id}/image")
     public ResponseEntity<Object> uploadImage(@PathVariable long id, @RequestParam MultipartFile imageFile)
             throws IOException {
@@ -123,46 +153,69 @@ public class ArticleRestController {
         Article article = articleService.findById(id);
 
         if (article != null) {
-
             URI location = ServletUriComponentsBuilder.fromCurrentRequest().build().toUri();
-
             article.setImage(location.toString());
             articleService.save(article);
-
             imageService.saveImage(ARTICLES_FOLDER, article.getId(), imageFile);
-
             return ResponseEntity.created(location).build();
-
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Download the image of a specific article by ID
     @GetMapping("/{id}/image")
     public ResponseEntity<Object> downloadImage(@PathVariable long id) throws IOException {
-
         return this.imageService.createResponseFromImage(ARTICLES_FOLDER, id);
     }
 
+    // Delete the image of a specific article by ID
     @DeleteMapping("/{id}/image")
     public ResponseEntity<Object> deleteImage(@PathVariable long id) throws IOException {
-
         Article article = articleService.findById(id);
 
         if (article != null) {
-
             article.setImage(null);
             articleService.save(article);
-
             this.imageService.deleteImage(ARTICLES_FOLDER, id);
-
             return ResponseEntity.noContent().build();
-
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Get comments for a specific article by ID
+    @GetMapping("/{id}/comments/")
+    public ResponseEntity<Collection<Comment>> getCommentsByArticleId(@PathVariable long id) {
+        Article article = articleService.findById(id);
+
+        if (article != null) {
+            Collection<Comment> comments = article.getComments();
+            return ResponseEntity.ok(comments);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Get a specific comment by ID for a given article
+    @GetMapping("/{articleId}/comments/{commentId}")
+    public ResponseEntity<Comment> getCommentById(@PathVariable long articleId, @PathVariable long commentId) {
+        Article article = articleService.findById(articleId);
+
+        if (article != null) {
+            Comment comment = article.getCommentById(commentId);
+
+            if (comment != null) {
+                return ResponseEntity.ok(comment);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Add a new comment to a specific article
     @PostMapping("/{id}/comments/")
     public ResponseEntity<Article> addComment(@PathVariable long id, @RequestBody Comment newComment) {
         Article article = articleService.findById(id);
@@ -170,12 +223,21 @@ public class ArticleRestController {
         if (article != null) {
             article.addComment(newComment);
             articleService.update(article);
-            return ResponseEntity.ok(article);
+
+            // Return a ResponseEntity with status 201 and the URI of the new created resource
+            URI location = ServletUriComponentsBuilder
+                    .fromCurrentRequest()
+                    .path("/{commentId}")
+                    .buildAndExpand(newComment.getId())
+                    .toUri();
+
+            return ResponseEntity.created(location).body(article);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
+    // Delete a comment by ID for a specific article
     @DeleteMapping("/{articleId}/comments/{commentId}")
     public ResponseEntity<Article> deleteComment(@PathVariable long articleId, @PathVariable long commentId) {
         Article article = articleService.findById(articleId);

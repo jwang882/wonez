@@ -48,18 +48,12 @@ public class ArticleRestController {
 
     // Create a new article
     @PostMapping("/")
-    public ResponseEntity<Article> createArticle(
-            @ModelAttribute Article formData,
-            @RequestParam(value = "imagePath", required = false) MultipartFile imagePath) {
-
-        // Create an instance of Article with form data
-        Article article = new Article();
-        article.setCategory(formData.getCategory());
-        article.setUser(formData.getUser());
-        article.setTitle(formData.getTitle());
-        article.setSubtitle(formData.getSubtitle());
-        article.setAuthor(formData.getAuthor());
-        article.setText(formData.getText());
+    public ResponseEntity<Object> createArticle(@ModelAttribute Article article,
+                                                @RequestParam(value = "imagePath", required = false) MultipartFile imagePath) {
+        // Validate the article
+        if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
+            return ResponseEntity.badRequest().body("El título y el autor son campos obligatorios");
+        }
 
         // Save the article
         articleService.save(article);
@@ -89,15 +83,18 @@ public class ArticleRestController {
 
     // Update an existing article
     @PutMapping("/{id}")
-    public ResponseEntity<Article> replaceArticle(
-            @PathVariable long id,
-            @ModelAttribute Article updatedArticle,
-            @RequestParam(required = false) MultipartFile newImage) {
-
+    public ResponseEntity<Object> replaceArticle(@PathVariable long id,
+                                                  @ModelAttribute Article updatedArticle,
+                                                  @RequestParam(required = false) MultipartFile newImage) {
         Article existingArticle = articleService.findById(id);
 
         if (existingArticle == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        // Validate the article
+        if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
+            return ResponseEntity.badRequest().body("El título y el autor son campos obligatorios");
         }
 
         // Update the fields of the article
@@ -217,10 +214,15 @@ public class ArticleRestController {
 
     // Add a new comment to a specific article
     @PostMapping("/{id}/comments/")
-    public ResponseEntity<Article> addComment(@PathVariable long id, @RequestBody Comment newComment) {
+    public ResponseEntity<Object> addComment(@PathVariable long id, @RequestBody Comment newComment) {
         Article article = articleService.findById(id);
 
         if (article != null) {
+            // Validate comment score
+            if (newComment.getScore() < 0 || newComment.getScore() > 10) {
+                return ResponseEntity.badRequest().body("La puntuación del comentario debe estar entre 0 y 10");
+            }
+
             article.addComment(newComment);
             articleService.update(article);
 
@@ -235,7 +237,6 @@ public class ArticleRestController {
         } else {
             return ResponseEntity.notFound().build();
         }
-
     }
 
     // Delete a comment by ID for a specific article

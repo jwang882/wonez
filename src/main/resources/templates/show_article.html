@@ -244,6 +244,11 @@
             <div class="review-box">
                 <h2>Añadir una opinión</h2>
                 <form action="/article/{{article.id}}/add-comment" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+                    {{#errorComment}}
+                    <div id="errorMessage" class="error-message">
+                        {{errorComment}}
+                    </div>
+                    {{/errorComment}}
                     <label for="username">Usuario</label>
                     <input type="text" id="username" name="user" value="Wonez" readonly>
 

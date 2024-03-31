@@ -73,13 +73,15 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"></script>
 
 
-    <!--Form for edit an article on submit-->
-    <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8"
-        onsubmit="return validateForm()">
 
-    <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8" onsubmit="return validateForm()">
+    <form action="/article/{{article.id}}/edit" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
         <!--Input fields-->
-        <div class="error-message" id="globalError"></div>
+        <!-- Error message -->
+		{{#error}}
+		<div id="errorMessage" class="error-message">
+			{{error}}
+		</div>
+		{{/error}}
         <p>CATEGORÍA:</p>
         <input type="text" name="category" value="{{article.category}}">
 
@@ -87,13 +89,13 @@
         <input type="text" name="user" value="Wonez" readonly>
 
         <p>TÍTULO:</p>
-        <input type="text" name="title" id="titleInput" value="{{article.title}}">
+        <input type="text" name="title" value="{{article.title}}">
 
         <p>SUBTÍTULO:</p>
         <input type="text" name="subtitle" value="{{article.subtitle}}">
 
         <p>AUTOR:</p>
-        <input type="text" name="author" id="authorInput" value="{{article.author}}">
+        <input type="text" name="author" value="{{article.author}}">
 
         <p>TEXTO:</p>
         <textarea name="text" rows="5" cols="40" required>{{article.text}}</textarea>
@@ -103,29 +105,6 @@
 
         <input type='submit' value='Save' />
     </form>
-
-    <script>
-        function validateForm() {
-            var titleInput = document.getElementById('titleInput');
-            var authorInput = document.getElementById('authorInput');
-            var globalError = document.getElementById('globalError');
-
-            //Validation with error messages
-            if ((titleInput.value.trim() == "") && (authorInput.value.trim() == "")) {
-                globalError.textContent = "Por favor, rellene el campo\"Título\" y \"Autor\"";
-                return false;
-            } else if (titleInput.value.trim() == "") {
-                globalError.textContent = "Por favor, rellene el campo\"Título\"";
-                return false;
-            } else if (authorInput.value.trim() == "") {
-                globalError.textContent = "Por favor, rellene el campo\"Autor\"";
-                return false;
-            } else {
-                globalError.textContent = "";
-                return true;
-            }
-        }
-    </script>
 
 </body>
 

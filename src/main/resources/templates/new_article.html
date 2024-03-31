@@ -60,16 +60,22 @@
 
 	<!--Form to add a new article-->
 	<form action="/article/new" method="post" enctype="multipart/form-data" accept-charset="UTF-8">
+		<!-- Error message -->
+		{{#error}}
+		<div id="errorMessage" class="error-message">
+			{{error}}
+		</div>
+		{{/error}}
 		<p>CATEGORÍA: </p>
 		<input type='text' name='category'/>
 		<p>USUARIO: </p>
 		<input type='text' name='user' value="Wonez" readonly/>
 		<p>TÍTULO:</p>
-		<input type='text' name='title' id="titleInput"/>
+		<input type='text' name='title'/>
 		<p>SUBTÍTULO:</p>
 		<input type='text' name='subtitle'/>
 		<p>AUTOR:</p>
-		<input type='text' name='author' id="authorInput"/>
+		<input type='text' name='author'/>
 		<p>TEXTO:</p>
 		<textarea name='text' rows=5 cols=40></textarea>
 		<p>IMAGEN:</p>
@@ -77,29 +83,5 @@
 
 		<input type='submit' value='Save'/>
 	</form>
-
-	<script>
-		//Validation of title and author
-        function validateForm() {
-            var titleInput = document.getElementById('titleInput');
-            var authorInput = document.getElementById('authorInput');
-            var globalError = document.getElementById('globalError');
-
-
-            if ((titleInput.value.trim() == "") && (authorInput.value.trim() == "")) {
-                globalError.textContent = "Por favor, rellene el campo \"Título\" y \"Autor\"";
-                return false;
-            } else if (titleInput.value.trim() == "") {
-                globalError.textContent = "Por favor, rellene el campo \"Título\"";
-                return false;
-            } else if (authorInput.value.trim() == "") {
-                globalError.textContent = "Por favor, rellene el campo \"Autor\"";
-                return false;
-            } else {
-                globalError.textContent = "";
-                return true;
-            }
-        }
-    </script>
 </body>
 </html>

@@ -55,6 +55,11 @@ public class ArticleController {
     // Handle the submission of a new article
     @PostMapping("/article/new")
     public String newArticle(Model model, Article article, MultipartFile imagePath) throws IOException {
+        if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
+            // Manejar el caso en el que el título o el autor estén vacíos
+            model.addAttribute("error", "El título y el autor son campos obligatorios");
+            return "new_article";
+        }
         articleService.save(article);
         imageService.saveImage(ARTICLES_FOLDER, article.getId(), imagePath);
         userSession.setUser(article.getUser());
@@ -79,15 +84,21 @@ public class ArticleController {
             @ModelAttribute Article updatedArticle,
             @RequestParam(required = false) MultipartFile imagePath
     ) {
+        if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
+            // Manejar el caso en el que el título o el autor estén vacíos
+            model.addAttribute("error", "El título y el autor son campos obligatorios");
+            model.addAttribute("article", updatedArticle);
+            return "edit_article";
+        }
         Article existingArticle = articleService.findById(id);
 
-			// Update the existing article with the new values
-			existingArticle.setCategory(updatedArticle.getCategory());
-			existingArticle.setUser(updatedArticle.getUser());
-			existingArticle.setTitle(updatedArticle.getTitle());
-			existingArticle.setSubtitle(updatedArticle.getSubtitle());
-			existingArticle.setAuthor(updatedArticle.getAuthor());
-			existingArticle.setText(updatedArticle.getText());
+        // Update the existing article with the new values
+        existingArticle.setCategory(updatedArticle.getCategory());
+        existingArticle.setUser(updatedArticle.getUser());
+        existingArticle.setTitle(updatedArticle.getTitle());
+        existingArticle.setSubtitle(updatedArticle.getSubtitle());
+        existingArticle.setAuthor(updatedArticle.getAuthor());
+        existingArticle.setText(updatedArticle.getText());
 
         // Save the new article image if provided
         if (imagePath != null && !imagePath.isEmpty()) {
@@ -131,13 +142,20 @@ public class ArticleController {
     public String addComment(Model model, @PathVariable long id, @ModelAttribute Comment newComment) {
         Article article = articleService.findById(id);
 
+        // Validate comment score
+        if (newComment.getScore() < 0 || newComment.getScore() > 10) {
+            model.addAttribute("errorComment", "La puntuación del comentario debe estar entre 0 y 10");
+            model.addAttribute("article", article);
+            return "show_article";
+        }
+
         // Add the new comment to the article
         article.addComment(newComment);
         articleService.update(article);
 
         model.addAttribute("article", article);
 
-        return "redirect:/article/" + id;
+        return "show_article";
     }
 
     // Handle the request to delete a comment by its ID for a specific article

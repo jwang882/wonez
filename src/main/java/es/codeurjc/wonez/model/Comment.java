@@ -1,12 +1,28 @@
 package es.codeurjc.wonez.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
+
+@Entity
 public class Comment {
 
     // Comment attributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = null;
+
     private String user;
     private String text;
     private int score;
+
+    @ManyToOne
+    @JsonIgnore
+    private Article article;
 
     // Default constructor
     public Comment() {

@@ -3,10 +3,24 @@ package es.codeurjc.wonez.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.Id;
+
+
+@Entity
 public class User {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id = null;
 
     // User attributes
     private String username;
+
+    @ManyToMany
     private List<Article> favoriteArticles;
 
     // Constructor to initialize a User with a username

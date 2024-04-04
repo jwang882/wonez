@@ -1,4 +1,4 @@
-package es.codeurjc.wonez.controller;
+/*package es.codeurjc.wonez.controller;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -166,4 +166,4 @@ public class ArticleController {
         articleService.update(article);
         return "redirect:/article/" + articleId;
     }
-}
+}*/

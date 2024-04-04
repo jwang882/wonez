@@ -4,10 +4,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import java.sql.Blob;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
+import jakarta.persistence.ManyToMany;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Lob;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+@Entity
 public class Article {
 
-    // Article attributes
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id = null;
+
     private String category;
     private String user;
     private String title;
@@ -17,11 +33,19 @@ public class Article {
     private String image;
     
     // Lists to store comments and users who favorited the article
+    @OneToMany(cascade=CascadeType.ALL)
     private List<Comment> comments;
+
+    @ManyToMany(mappedBy="favoriteArticles")
     private List<User> favoritedBy;
+
 
     // Counter for generating unique comment IDs
     private static long commentIdCounter = 0;
+
+    @Lob
+	@JsonIgnore
+	private Blob imageFile;
 
     // Default constructor initializing lists
     public Article() {
@@ -38,6 +62,7 @@ public class Article {
         this.author = author;
         this.text = text;
         this.comments = new ArrayList<>();
+        this.favoritedBy = new ArrayList<>();
     }
 
     // Getter and setter methods for article attributes
@@ -104,6 +129,14 @@ public class Article {
     public void setImage(String image) {
         this.image = image;
     }
+
+    public Blob getImageFile() {
+		return imageFile;
+	}
+    
+    public void setImageFile(Blob image) {
+		this.imageFile = image;
+	}
 
     public List<Comment> getComments() {
         return comments;

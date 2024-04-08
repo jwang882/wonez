@@ -1,12 +1,9 @@
 package es.codeurjc.wonez.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
 
 @Entity
 public class Comment {
@@ -20,16 +17,13 @@ public class Comment {
     private String text;
     private int score;
 
-    @ManyToOne
-    @JsonIgnore
-    private Article article;
-
     // Default constructor
     public Comment() {
     }
 
     // Parameterized constructor for creating a comment with details
     public Comment(String user, String text, int score) {
+        super();
         this.user = user;
         this.text = text;
         this.score = score;

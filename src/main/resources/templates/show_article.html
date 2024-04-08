@@ -217,10 +217,10 @@
     <div class="container">
         <div class="news-article">
             <div class="category">{{article.category}}</div>
-            <img class="article-image" src="/article/{{article.id}}/image" alt="Article Image">
+            <img class="article-image" src="http://127.0.0.1:8080/api/articles/{{id}}/image" alt="Article Image">
             <h1>{{article.title}}</h1>
             <h2>{{article.subtitle}}</h2>
-            <p>{{article.text}}</p>
+            <p>{{{article.text}}}</p>
             <div class="author">Autor: {{article.author}}</div>
 
             <!--Comments section-->

@@ -8,6 +8,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
 
 
 @Entity
@@ -21,6 +23,11 @@ public class User {
     private String username;
 
     @ManyToMany
+    @JoinTable(
+        name = "user_favorite_articles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "article_id")
+    )
     private List<Article> favoriteArticles;
 
     // Constructor to initialize a User with a username

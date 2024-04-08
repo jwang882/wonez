@@ -34,7 +34,7 @@ public class Article {
     
     // Lists to store comments and users who favorited the article
     @OneToMany(cascade=CascadeType.ALL)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
 
     @ManyToMany(mappedBy="favoriteArticles")
     private List<User> favoritedBy;
@@ -54,13 +54,14 @@ public class Article {
     }
 
     // Parameterized constructor for creating an article with basic details
-    public Article(String category, String user, String title, String subtitle, String author, String text) {
+    public Article(String category, String user, String title, String subtitle, String author, String text, String image) {
         this.category = category;
         this.user = user;
         this.title = title;
         this.subtitle = subtitle;
         this.author = author;
         this.text = text;
+        this.image = image;
         this.comments = new ArrayList<>();
         this.favoritedBy = new ArrayList<>();
     }

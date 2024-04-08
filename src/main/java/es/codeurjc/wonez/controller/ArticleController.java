@@ -4,6 +4,8 @@ import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.model.Comment;
 import es.codeurjc.wonez.repository.CommentRepository;
 import es.codeurjc.wonez.service.ArticleService;
+import es.codeurjc.wonez.service.UserSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,6 +21,9 @@ public class ArticleController {
 
     @Autowired
     private CommentRepository commentService;
+
+    @Autowired
+    private UserSession userSession;
 
     @GetMapping("/")
     public String showArticles(Model model) {
@@ -40,6 +45,9 @@ public class ArticleController {
             return "new_article";
         }
         articleService.save(article);
+        userSession.setUser(article.getUser());
+        userSession.incNumArticles();
+        model.addAttribute("numArticles", userSession.getNumArticles());
         return "saved_article";
     }
 

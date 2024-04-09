@@ -10,6 +10,7 @@ import org.springframework.web.multipart.MultipartFile;
 import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.repository.ArticleRepository;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 
 @Service
 public class ArticleService {
@@ -61,13 +62,35 @@ public class ArticleService {
 		articles.save(updatedArticle);
     }
 
-    @SuppressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public List<Article> findAll(String category, String keyword) {
-		String query = "SELECT * FROM Article";
-		if( (isNotEmptyField(category) || isNotEmptyField(keyword))) {
-			query+=" WHERE category = '"+category+"' AND title LIKE '"+keyword+"'";
+		String queryStr = "SELECT a FROM Article a"; 
+		boolean needAnd = false;
+	
+		if (isNotEmptyField(category) || isNotEmptyField(keyword)) {
+			queryStr += " WHERE";
+			if (isNotEmptyField(category)) {
+				queryStr += " a.category = :category";
+				needAnd = true;
+			}
+			if (isNotEmptyField(keyword)) {
+				if (needAnd) {
+					queryStr += " AND";
+				}
+				queryStr += " a.title LIKE :keyword";
+			}
 		}
-		return (List<Article>) entityManager.createNativeQuery(query, Article.class).getResultList();
+	
+		TypedQuery<Article> query = entityManager.createQuery(queryStr, Article.class); 
+	
+		if (isNotEmptyField(category)) {
+			query.setParameter("category", category);
+		}
+		if (isNotEmptyField(keyword)) {
+			query.setParameter("keyword", "%" + keyword + "%"); 
+		}
+	
+		return query.getResultList();
 	}
 
     private boolean isNotEmptyField(String field) {

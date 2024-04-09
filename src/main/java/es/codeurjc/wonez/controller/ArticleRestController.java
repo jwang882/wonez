@@ -5,7 +5,6 @@ import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.model.Comment;
 import es.codeurjc.wonez.repository.CommentRepository;
 import es.codeurjc.wonez.service.ArticleService;
-import jakarta.transaction.Transactional;
 
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -61,7 +60,7 @@ public class ArticleRestController {
     @RequestParam(value = "imagePath", required = false) MultipartFile imagePath) {
         // Validate the article
         if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
-            return ResponseEntity.badRequest().body("Debes añadir un título y un autor");
+            return ResponseEntity.badRequest().body("Error: Falta título o autor");
             }
         // Save the article
         articles.save(article,imagePath);
@@ -75,14 +74,13 @@ public class ArticleRestController {
     public ResponseEntity<Object> replaceArticle(@PathVariable long id, @ModelAttribute Article updatedArticle, 
     @RequestParam(value = "newImage", required = false) MultipartFile newImage){
         if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
-            return ResponseEntity.badRequest().body("Debes añadir un título y un autor");
+            return ResponseEntity.badRequest().body("Error: Falta título o autor");
             }
 		articles.update(updatedArticle,newImage);
 		return ResponseEntity.ok(updatedArticle);
     }
 
     @DeleteMapping("/{id}")
-    @Transactional
     public ResponseEntity<Object> deleteArticle(@PathVariable long id) throws IOException {
         Article article = articles.findById(id).orElse(null);
 
@@ -90,7 +88,7 @@ public class ArticleRestController {
             return ResponseEntity.notFound().build();
         } else {
             articles.deleteById(id);
-            return ResponseEntity.ok(article);
+            return ResponseEntity.ok("Artículo borrado");
         }
     }
 

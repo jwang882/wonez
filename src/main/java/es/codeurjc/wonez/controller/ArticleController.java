@@ -54,7 +54,7 @@ public class ArticleController {
     @PostMapping("/article/new")
     public String newArticle(Model model, @ModelAttribute Article article, MultipartFile imagePath) throws IOException {
         if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
-            model.addAttribute("error", "El título y el autor son campos obligatorios");
+            model.addAttribute("error", "Error: Falta título o autor");
             return "new_article";
         }
         articleService.save(article,imagePath);
@@ -74,7 +74,7 @@ public class ArticleController {
     @PostMapping("/article/{id}/edit")
     public String editArticle(Model model, @PathVariable long id, @ModelAttribute Article updatedArticle, @RequestParam(required = false) MultipartFile newImage) throws IOException {
         if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
-            model.addAttribute("error", "El título y el autor son campos obligatorios");
+            model.addAttribute("error", "Error: Falta título o autor");
             model.addAttribute("article", updatedArticle);
             return "edit_article";
         }

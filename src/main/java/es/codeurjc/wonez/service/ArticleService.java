@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.repository.ArticleRepository;
+import jakarta.persistence.EntityManager;
 
 @Service
 public class ArticleService {
@@ -18,6 +19,9 @@ public class ArticleService {
 
     @Autowired
 	private ImageService imageService;
+
+    @Autowired
+	private EntityManager entityManager;
 
 	// Method to retrieve all articles
     public List<Article> findAll() {
@@ -56,4 +60,19 @@ public class ArticleService {
 		if(updatedArticle.getImage() == null || updatedArticle.getImage().isEmpty()) updatedArticle.setImage("no-image.jpg");
 		articles.save(updatedArticle);
     }
+
+    @SuppressWarnings("unchecked")
+	public List<Article> findAll(String category, String keyword) {
+		String query = "SELECT * FROM Article";
+		if( (isNotEmptyField(category) || isNotEmptyField(keyword))) {
+			query+=" WHERE category = '"+category+"' AND title LIKE '"+keyword+"'";
+		}
+		return (List<Article>) entityManager.createNativeQuery(query, Article.class).getResultList();
+	}
+
+    private boolean isNotEmptyField(String field) {
+		return field != null && !field.isEmpty();
+	}
+    
+
 }

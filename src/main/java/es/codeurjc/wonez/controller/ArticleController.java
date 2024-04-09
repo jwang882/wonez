@@ -20,7 +20,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.sql.SQLException;
-import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -39,9 +38,8 @@ public class ArticleController {
 	private ImageService imageService;
     
     @GetMapping("/")
-    public String showArticles(Model model) {
-        List<Article> articles = articleService.findAll();
-        model.addAttribute("articles", articles);
+    public String showArticles(Model model, @RequestParam(required = false) String category, @RequestParam(required = false) String keyword) {
+        model.addAttribute("articles", articleService.findAll(category, keyword));
         return "index";
     }
 

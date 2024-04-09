@@ -123,6 +123,7 @@
             width: 250px; 
             position: fixed;
             top: 56px; 
+            left: 0; /* Ajuste para colocarlo en el extremo izquierdo */
             bottom: 0;
             overflow-y: auto;
             background-color: #f8f8f8;
@@ -132,7 +133,7 @@
         }
 
         .content {
-            margin-left: 200px; 
+            margin-left: 250px; /* Ajuste para dar espacio al sidebar */
             padding: 10px;
             flex-grow: 1;
         }
@@ -140,8 +141,6 @@
         footer {
             padding: 10px 0;
             text-align: center;
-            background-color: #f8f8f8;
-            border-top: 1px solid #ccc;
             bottom: 0;
             left: 0;
             width: 100%;
@@ -179,6 +178,15 @@
         <h1>¡Bienvenido por primera vez a Wonez!</h1>
     </div>
     {{/welcome}}
+
+    <div class="container">
+        <h2>Artículos</h2>
+    
+        <form action="/" method="GET">
+            <input type="text" name="category" placeholder="Categoría">
+            <input type="text" name="keyword" placeholder="Palabra clave">
+            <button type="submit">Buscar</button>
+        </form>
     
     <!--List of available articles-->
     {{#articles}}

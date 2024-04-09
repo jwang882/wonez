@@ -2,7 +2,7 @@ package es.codeurjc.wonez.model;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 import java.sql.Blob;
 
@@ -31,7 +31,7 @@ public class Article {
     private String author;
     private String text;
     private String image;
-    
+
     // Lists to store comments and users who favorited the article
     @OneToMany(cascade=CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();

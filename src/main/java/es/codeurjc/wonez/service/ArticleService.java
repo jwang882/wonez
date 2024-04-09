@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.repository.ArticleRepository;
@@ -14,6 +15,9 @@ public class ArticleService {
 
     @Autowired
 	private ArticleRepository articles;
+
+    @Autowired
+	private ImageService imageService;
 
 	// Method to retrieve all articles
     public List<Article> findAll() {
@@ -26,7 +30,13 @@ public class ArticleService {
     }
 
     // Method to save a new article
-    public void save(Article article) {
+    public void save(Article article, MultipartFile imageField) {
+        if (imageField != null && !imageField.isEmpty()){
+			String path = imageService.createImage(imageField);
+			article.setImage(path);
+		}
+
+		if(article.getImage() == null || article.getImage().isEmpty()) article.setImage("no-image.jpg");
 		articles.save(article);		
 	}
 
@@ -36,8 +46,14 @@ public class ArticleService {
     }
 
     // Method to update an existing article
-    public void update(Article updatedArticle) {
+    public void update(Article updatedArticle, MultipartFile imageField) {
         articles.findById(updatedArticle.getId()).orElseThrow();
+        if (imageField != null && !imageField.isEmpty()){
+			String path = imageService.createImage(imageField);
+			updatedArticle.setImage(path);
+		}
+
+		if(updatedArticle.getImage() == null || updatedArticle.getImage().isEmpty()) updatedArticle.setImage("no-image.jpg");
 		articles.save(updatedArticle);
     }
 }

@@ -4,14 +4,24 @@ import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.model.Comment;
 import es.codeurjc.wonez.repository.CommentRepository;
 import es.codeurjc.wonez.service.ArticleService;
+import es.codeurjc.wonez.service.ImageService;
 import es.codeurjc.wonez.service.UserSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.server.ResponseStatusException;
 
+import java.io.IOException;
+import java.sql.SQLException;
 import java.util.List;
+import java.util.Optional;
 
 @Controller
 public class ArticleController {
@@ -25,6 +35,9 @@ public class ArticleController {
     @Autowired
     private UserSession userSession;
 
+    @Autowired
+	private ImageService imageService;
+    
     @GetMapping("/")
     public String showArticles(Model model) {
         List<Article> articles = articleService.findAll();
@@ -39,12 +52,12 @@ public class ArticleController {
     }
 
     @PostMapping("/article/new")
-    public String newArticle(Model model, @ModelAttribute Article article) {
+    public String newArticle(Model model, @ModelAttribute Article article, MultipartFile imagePath) throws IOException {
         if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
             model.addAttribute("error", "El título y el autor son campos obligatorios");
             return "new_article";
         }
-        articleService.save(article);
+        articleService.save(article,imagePath);
         userSession.setUser(article.getUser());
         userSession.incNumArticles();
         model.addAttribute("numArticles", userSession.getNumArticles());
@@ -59,13 +72,13 @@ public class ArticleController {
     }
 
     @PostMapping("/article/{id}/edit")
-    public String editArticle(Model model, @PathVariable long id, @ModelAttribute Article updatedArticle) {
+    public String editArticle(Model model, @PathVariable long id, @ModelAttribute Article updatedArticle, @RequestParam(required = false) MultipartFile newImage) throws IOException {
         if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
             model.addAttribute("error", "El título y el autor son campos obligatorios");
             model.addAttribute("article", updatedArticle);
             return "edit_article";
         }
-        articleService.update(updatedArticle);
+        articleService.update(updatedArticle, newImage);
         return "redirect:/article/" + id;
     }
 
@@ -77,6 +90,20 @@ public class ArticleController {
         return "show_article";
     }
 
+    @GetMapping("/articles/{id}/image")
+	public ResponseEntity<Object> downloadImage(@PathVariable long id) throws SQLException {
+
+		Optional<Article> op = articleService.findById(id);
+
+		if(op.isPresent()) {
+			Article book = op.get();
+			Resource poster = imageService.getImage(book.getImage());
+			return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, "image/jpeg").body(poster);
+		}else {
+			throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Film not found");
+		}
+	}
+
     @PostMapping("/article/{id}/add-comment")
     public String addComment(Model model, @PathVariable long id, @ModelAttribute Comment newComment) {
         Article article = articleService.findById(id).orElseThrow();
@@ -86,7 +113,7 @@ public class ArticleController {
             return "show_article";
         }
         article.addComment(newComment);
-        articleService.save(article);
+        articleService.save(article,null);
         return "redirect:/article/" + id;
     }
 
@@ -95,7 +122,7 @@ public class ArticleController {
         Article article = articleService.findById(articleId).orElseThrow();
         article.deleteCommentById(commentId);
         commentService.deleteById(commentId);
-        articleService.save(article);
+        articleService.save(article,null);
         return "redirect:/article/" + articleId;
     }
 

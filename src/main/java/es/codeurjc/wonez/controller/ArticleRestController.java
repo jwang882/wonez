@@ -5,6 +5,8 @@ import es.codeurjc.wonez.model.Article;
 import es.codeurjc.wonez.model.Comment;
 import es.codeurjc.wonez.repository.CommentRepository;
 import es.codeurjc.wonez.service.ArticleService;
+import jakarta.transaction.Transactional;
+
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.hibernate.engine.jdbc.BlobProxy;
@@ -15,6 +17,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -54,13 +57,14 @@ public class ArticleRestController {
 
     // Create a new article
     @PostMapping("/")
-    public ResponseEntity<Object> createArticle(@RequestBody Article article) {
+    public ResponseEntity<Object> createArticle(@ModelAttribute Article article,
+    @RequestParam(value = "imagePath", required = false) MultipartFile imagePath) {
         // Validate the article
         if (article.getTitle().isEmpty() || article.getAuthor().isEmpty()) {
             return ResponseEntity.badRequest().body("Debes añadir un título y un autor");
             }
         // Save the article
-        articles.save(article);
+        articles.save(article,imagePath);
 		URI location = fromCurrentRequest().path("/{id}").buildAndExpand(article.getId()).toUri();
 
 		return ResponseEntity.created(location).body(article);
@@ -68,19 +72,26 @@ public class ArticleRestController {
 
     // Update an existing article
     @PutMapping("/{id}")
-    public Article replaceArticle(@RequestBody Article newArticle, @PathVariable long id){
-        newArticle.setId(id);
-		articles.update(newArticle);
-
-		return newArticle;
+    public ResponseEntity<Object> replaceArticle(@PathVariable long id, @ModelAttribute Article updatedArticle, 
+    @RequestParam(value = "newImage", required = false) MultipartFile newImage){
+        if (updatedArticle.getTitle().isEmpty() || updatedArticle.getAuthor().isEmpty()) {
+            return ResponseEntity.badRequest().body("Debes añadir un título y un autor");
+            }
+		articles.update(updatedArticle,newImage);
+		return ResponseEntity.ok(updatedArticle);
     }
 
-    // Delete an article by ID
     @DeleteMapping("/{id}")
-    public Article deleteArticle(@PathVariable long id){
-        Article article = articles.findById(id).orElseThrow();
-		articles.deleteById(id);
-		return article;
+    @Transactional
+    public ResponseEntity<Object> deleteArticle(@PathVariable long id) throws IOException {
+        Article article = articles.findById(id).orElse(null);
+
+        if (article == null) {
+            return ResponseEntity.notFound().build();
+        } else {
+            articles.deleteById(id);
+            return ResponseEntity.ok(article);
+        }
     }
 
     // Upload an image for a specific article
@@ -91,7 +102,7 @@ public class ArticleRestController {
 		URI location = fromCurrentRequest().build().toUri();
 		article.setImage(location.toString());
 		article.setImageFile(BlobProxy.generateProxy(imageFile.getInputStream(), imageFile.getSize()));
-		articles.save(article);
+		articles.save(article,null);
 
 		return ResponseEntity.created(location).build();
 	}
@@ -149,7 +160,7 @@ public class ArticleRestController {
                 return ResponseEntity.badRequest().body("La puntuación del comentario debe estar entre 0 y 10");
             }
             article.getComments().add(newComment);
-            articles.save(article);
+            articles.save(article,null);
 
             // Return a ResponseEntity with status 201 and the URI of the new created resource
             URI location = ServletUriComponentsBuilder
@@ -176,7 +187,7 @@ public class ArticleRestController {
             if (commentToDelete != null) {
                 article.getComments().remove(commentToDelete);
                 commentService.deleteById(commentId);
-                articles.save(article);
+                articles.save(article,null);
                 return ResponseEntity.ok().build();
             } else {
                 return ResponseEntity.notFound().build();

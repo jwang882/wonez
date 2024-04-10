@@ -45,6 +45,10 @@
 			<artifactId>mysql-connector-java</artifactId>
 			<version>8.0.19</version>
 		</dependency>
+		<sonar.organization>jwang882</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+        <sonar.moduleKey>${project.groupId}:${project.artifactId}</sonar.moduleKey>
+        <skipTests>true</skipTests>
 	</dependencies>
 
 	<build>
